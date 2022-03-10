@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 
+import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
@@ -14,9 +15,11 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
+    private JdbcAccountDao accountDao;
 
-    public TenmoController(JdbcUserDao userdao) {
+    public TenmoController(JdbcUserDao userdao, JdbcAccountDao accountDao) {
         this.userDao = userdao;
+        this.accountDao = accountDao;
     }
 
     @RequestMapping(path = "users", method = RequestMethod.GET)
@@ -31,9 +34,9 @@ public class TenmoController {
 
     // path = "users/username/{id}"
     @RequestMapping(path = "users/{username}/balance", method = RequestMethod.GET)
-    public double getBalance(@PathVariable String username) {
+    public Double getBalance(@PathVariable String username) {
         //TODO make JdbcAccountDao query database and return that method here!
-        return 0; // This is a stub as a placeholder so the code compiles
+        return accountDao.getBalance(username); // This is a stub as a placeholder so the code compiles
     }
 }
 
