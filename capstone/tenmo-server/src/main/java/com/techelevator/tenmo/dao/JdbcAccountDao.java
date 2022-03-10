@@ -12,5 +12,7 @@ public class JdbcAccountDao implements AccountDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+    public double getBalance() {
+        return 0;
+    }
 }

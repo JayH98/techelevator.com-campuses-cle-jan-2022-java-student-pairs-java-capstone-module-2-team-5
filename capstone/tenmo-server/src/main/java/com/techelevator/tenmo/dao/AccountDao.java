@@ -3,14 +3,6 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.User;
 
 public interface AccountDao {
-
-    //this is random text
-
-    // Dan Shaw owns line seven!!!
-
-
-
-
-
-
+    // should this parameter be account_id if a user has multiple accounts?
+    public double getBalance(String username);
 }
