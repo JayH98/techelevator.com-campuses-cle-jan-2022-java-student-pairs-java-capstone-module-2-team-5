@@ -4,5 +4,5 @@ import com.techelevator.tenmo.model.User;
 
 public interface AccountDao {
     // should this parameter be account_id if a user has multiple accounts?
-    public double getBalance(String username);
+    public Double getBalance(String username);
 }
