@@ -29,12 +29,11 @@ public class TenmoController {
         return userDao.findIdByUsername(username);
     }
 
-
-
-
-
-
-
+    @RequestMapping(path = "users/{username}/balance", method = RequestMethod.GET)
+    public double getBalance(@PathVariable String username) {
+        //TODO make JdbcAccountDao query database and return that method here!
+        return 0; // This is a stub as a placeholder so the code compiles
+    }
 }
 
 
