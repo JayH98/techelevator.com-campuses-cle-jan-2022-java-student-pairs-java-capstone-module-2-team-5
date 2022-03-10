@@ -1,7 +1,8 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.Account;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,5 +13,24 @@ public class JdbcAccountDao implements AccountDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // -1.0 should be checked on the client side if it fails
+    // Maybe we should make a custom exception to handle this occasion!
+    // TODO verify client code can throw exception if getBalance() returns -1.0
+    public Double getBalance(String username) {
+        Double balance = null;
+        String sql = "SELECT balance " +
+                "FROM account " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                "WHERE username = ?";
+        balance = jdbcTemplate.queryForObject(sql, Double.class, username);
+        return balance;
+    }
 
+    private Account mapRowToAccount(SqlRowSet rowSet) {
+        Account account = new Account();
+        account.setAccountId(rowSet.getInt("account_id"));
+        account.setUserId(rowSet.getInt("user_id"));
+        account.setBalance(rowSet.getDouble("balance"));
+        return account;
+    }
 }
