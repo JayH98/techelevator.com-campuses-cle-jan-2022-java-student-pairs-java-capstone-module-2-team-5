@@ -4,13 +4,14 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/tenmo/")
+@PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
 
@@ -23,8 +24,38 @@ public class TenmoController {
         return userDao.findAll();
     }
 
-    @RequestMapping(path = "users", method = RequestMethod.GET)
-    public int findIdByUsername(@RequestParam String username) {
+    @RequestMapping(path = "users/{username}", method = RequestMethod.GET)
+    public int findIdByUsername(@PathVariable String username) {
         return userDao.findIdByUsername(username);
     }
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
