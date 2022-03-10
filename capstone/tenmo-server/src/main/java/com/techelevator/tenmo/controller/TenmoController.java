@@ -29,6 +29,7 @@ public class TenmoController {
         return userDao.findIdByUsername(username);
     }
 
+    // path = "users/username/{id}"
     @RequestMapping(path = "users/{username}/balance", method = RequestMethod.GET)
     public double getBalance(@PathVariable String username) {
         //TODO make JdbcAccountDao query database and return that method here!
