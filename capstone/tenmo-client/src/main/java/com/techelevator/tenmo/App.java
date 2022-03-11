@@ -4,6 +4,7 @@ import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TenmoService;
 
 public class App {
 
@@ -11,7 +12,7 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-
+    private final TenmoService tenmoService = new TenmoService(API_BASE_URL);
     private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
@@ -85,13 +86,18 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-        // TODO only view our current balance
-		
+        //double balance = tenmoService.getCurrentUserBalance();
+        //consoleService.printIt(balance);
+        // TODO only view our current balance as double to change to Big Decimal
+
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+        //Transfer[] history = tenmoService.getTransferHistory();
+        //consoleService.printIt(history);
+		// TODO create a model Class for Transfer
+        //todo tenmoService returns an array of transfers
+        // todo pass transfer array to consoleService
 		
 	}
 
@@ -101,7 +107,11 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		// TODO have tenmoService call with transfer( fromAccountId, toAccountId, amount)
+        /*todo have transfer() return a boolean on success or failure and send
+        boolean to consoleService to print message
+         */
+
 		
 	}
 

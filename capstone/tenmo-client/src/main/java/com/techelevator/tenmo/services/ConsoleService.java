@@ -57,6 +57,7 @@ public class ConsoleService {
         return scanner.nextLine();
     }
 
+    //Who do I want to send money to
     public int promptForInt(String prompt) {
         System.out.print(prompt);
         while (true) {
@@ -68,6 +69,7 @@ public class ConsoleService {
         }
     }
 
+    //How much money do I want to send
     public BigDecimal promptForBigDecimal(String prompt) {
         System.out.print(prompt);
         while (true) {
@@ -78,6 +80,13 @@ public class ConsoleService {
             }
         }
     }
+
+    //todo prompt for current balance in ConsolService.java
+    //todo sent TE bucks display Method in ConsolService.java
+    //todo write the useTransfers display in ConsolService.java
+    //todo write the transferId display in ConsolService.java
+    //todo (optional) create the requesting TE bucks display in ConsolService.java
+    //todo (optional) pending request
 
     public void pause() {
         System.out.println("\nPress Enter to continue...");
