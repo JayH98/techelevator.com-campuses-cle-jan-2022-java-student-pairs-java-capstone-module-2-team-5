@@ -39,9 +39,9 @@ public class TenmoController {
 //        return userDao.findIdByUsername(username);
 //    }
 
-    @RequestMapping(path = "users/{username}/balance", method = RequestMethod.GET)
-    public Double getBalance(@PathVariable String username) {
-        return accountDao.getBalance(username);
+    @RequestMapping(path = "users/{id}/balance", method = RequestMethod.GET)
+    public Double getBalance(@PathVariable int id) {
+        return accountDao.getBalance(id);
     }
 
     @RequestMapping(path = "transfers", method = RequestMethod.PUT)
@@ -54,8 +54,8 @@ public class TenmoController {
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
-    public List<Transfer> viewTransfers(@PathVariable int id) {
-        return transferDao.viewTransfers(id);
+    public List<Transfer> viewTransfers(@PathVariable(name = "id") int userId) {
+        return transferDao.viewTransfers(userId);
     }
 
     // TODO ask Ben about Principal

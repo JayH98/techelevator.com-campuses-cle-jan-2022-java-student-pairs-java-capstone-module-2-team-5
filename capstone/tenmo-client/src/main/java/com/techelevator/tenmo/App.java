@@ -55,6 +55,7 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
+        currentUser.
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
@@ -87,6 +88,8 @@ public class App {
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
         // TODO only view our current balance
+
+
 		
 	}
 

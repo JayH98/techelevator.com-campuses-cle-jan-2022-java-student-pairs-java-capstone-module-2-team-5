@@ -39,20 +39,21 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public List<Transfer> viewTransfers(int id) {
+    public List<Transfer> viewTransfers(int userId) {
         List<Transfer> transfers = new ArrayList<>();
 
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfer " +
                 "WHERE account_from = ? OR account_to = ?;";
-
-        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, id, id);
+        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId, userId);
 
         while (rowset.next()) {
             Transfer transfer = mapTransferToRowset(rowset);
+            transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
+            transfer.setAccountToUsername(getUserRowset(transfer.getAccountToID()).getString("username"));
+
             transfers.add(transfer);
         }
-
         return transfers;
     }
 
@@ -80,13 +81,23 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setTransferId(rowset.getInt("transfer_id"));
         transfer.setTransferTypeId(rowset.getInt("transfer_type_id"));
         transfer.setTransferStatusId(rowset.getInt("transfer_status_id"));
-        transfer.setAccountFrom(rowset.getInt("account_from"));
-        transfer.setAccountTo(rowset.getInt("account_to"));
+        transfer.setAccountFromId(rowset.getInt("account_from"));
+        transfer.setAccountToId(rowset.getInt("account_to"));
         transfer.setAmount(rowset.getDouble("amount"));
 
         return transfer;
     }
 
+    private SqlRowSet getUserRowset(int userId) {                 //Gets usernames for Transfer object using account_id
+        String sql = "SELECT username FROM tenmo_user " +
+                "JOIN account ON tenmo_user.user_id = account.user_id " +
+                "WHERE account_id = ?";
+
+        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
+        rowset.next();                                            // Used to prevent java.sql.SQLException "Invalid cursor position"
+
+        return rowset;
+    }
 
 
 

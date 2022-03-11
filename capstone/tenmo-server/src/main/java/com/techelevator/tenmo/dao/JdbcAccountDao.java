@@ -16,13 +16,13 @@ public class JdbcAccountDao implements AccountDao {
     // -1.0 should be checked on the client side if it fails
     // Maybe we should make a custom exception to handle this occasion!
     // TODO verify client code can throw exception if getBalance() returns -1.0
-    public Double getBalance(String username) {
+    public Double getBalance(int userId) {
         Double balance = null;
         String sql = "SELECT balance " +
                 "FROM account " +
                 "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
-                "WHERE username = ?";
-        balance = jdbcTemplate.queryForObject(sql, Double.class, username);
+                "WHERE tenmo_user.user_id = ?";
+        balance = jdbcTemplate.queryForObject(sql, Double.class, userId);
         return balance;
     }
 
