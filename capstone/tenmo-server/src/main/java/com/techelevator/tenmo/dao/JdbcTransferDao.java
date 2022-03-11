@@ -13,7 +13,8 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public String transferMoney() {
-        return null;
+    public void transferMoney(int transferTypeId, int transferStatusId,
+                              int accountFrom, int accountTo, double amount){
+
     }
 }
