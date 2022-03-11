@@ -4,13 +4,12 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,14 +39,11 @@ public class TenmoController {
     }
 
     @RequestMapping(path = "users/{from}/transfer/{to}", method = RequestMethod.PUT)
-    public void transfer(/*@Valid*/ @RequestBody Transfer transfer, @PathVariable String from, @PathVariable String to) {
+    public void transfer(/*@Valid*/ @RequestBody TransferDTO transfer, @PathVariable String from, @PathVariable String to) {
         //Todo make validations for transfer model
         int fromId = findIdByUsername(from);
         int toId = findIdByUsername(to);
-        transfer.setAccountFrom(fromId);
-        transfer.setAccountTo(toId);
-        transfer.setTransferTypeId(2);
-        transfer.setTransferStatusId(2);
+        double amount = transfer.getAmount();
         //Todo add transfer method to transferDao interface
         //todo add transfer method implementation to JdbcTransferDao
     }
