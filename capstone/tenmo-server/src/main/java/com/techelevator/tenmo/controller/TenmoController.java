@@ -54,10 +54,8 @@ public class TenmoController {
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
-    public List<Transfer> viewTransfers(@PathVariable int id, Principal principal) {
-        List<Transfer> transfers = new ArrayList<>();
-
-        return transfers;
+    public List<Transfer> viewTransfers(@PathVariable int id) {
+        return transferDao.viewTransfers(id);
     }
 
     // TODO ask Ben about Principal
