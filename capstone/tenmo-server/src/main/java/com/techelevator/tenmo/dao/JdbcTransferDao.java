@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 
+import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferStatus;
 import com.techelevator.tenmo.model.TransferType;
@@ -39,22 +40,26 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public List<Transfer> viewTransfers(int userId) {
+    public List<Transfer> viewTransfers(int userId) throws TransferNotFoundException {
         List<Transfer> transfers = new ArrayList<>();
 
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
                 "FROM transfer " +
-                "WHERE account_from = ? OR account_to = ?;";
-        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId, userId);
+                "JOIN account ON transfer.account_from = account.account_id OR transfer.account_to = account.account_id " +
+                "WHERE user_id = ?;";
 
-        while (rowset.next()) {
-            Transfer transfer = mapTransferToRowset(rowset);
-            transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
-            transfer.setAccountToUsername(getUserRowset(transfer.getAccountToID()).getString("username"));
+        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
+        if (rowset.next()) {
+            while (rowset.next()) {
+                Transfer transfer = mapTransferToRowset(rowset);
+                transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
+                transfer.setAccountToUsername(getUserRowset(transfer.getAccountToID()).getString("username"));
 
-            transfers.add(transfer);
+                transfers.add(transfer);
+            }
+            return transfers;
         }
-        return transfers;
+        else throw new TransferNotFoundException("Error. No such transfer exists or you do not have permission to view it.");
     }
 
     private void createTransfer(int fromUserAccountId, int toUserAccountId, double transferAmount) {

@@ -55,7 +55,6 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
-        currentUser.
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }

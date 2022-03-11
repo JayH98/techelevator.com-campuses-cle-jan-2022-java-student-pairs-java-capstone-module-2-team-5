@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
@@ -54,7 +55,7 @@ public class TenmoController {
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
-    public List<Transfer> viewTransfers(@PathVariable(name = "id") int userId) {
+    public List<Transfer> viewTransfers(@PathVariable(name = "id") int userId) throws TransferNotFoundException {
         return transferDao.viewTransfers(userId);
     }
 
