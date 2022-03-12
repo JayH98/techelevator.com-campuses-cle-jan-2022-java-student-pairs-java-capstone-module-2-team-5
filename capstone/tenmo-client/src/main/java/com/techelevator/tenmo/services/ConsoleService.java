@@ -82,8 +82,7 @@ public class ConsoleService {
         }
     }
 
-    //todo prompt for current balance in ConsolService.java
-    public void displayCurrentBalance(double balance) {
+    public void printCurrentBalance(double balance) {
         System.out.println("Your current account balance is: " +
                 NumberFormat.getCurrencyInstance().format(balance));
     }
