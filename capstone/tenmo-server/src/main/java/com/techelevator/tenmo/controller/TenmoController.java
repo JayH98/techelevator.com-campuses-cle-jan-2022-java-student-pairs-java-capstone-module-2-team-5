@@ -1,10 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 
-import com.techelevator.tenmo.dao.JdbcAccountDao;
-import com.techelevator.tenmo.dao.JdbcUserDao;
-import com.techelevator.tenmo.dao.TransferDao;
-import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
@@ -21,10 +18,10 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
-    private JdbcAccountDao accountDao;
+    private AccountDao accountDao;
     private TransferDao transferDao;
 
-    public TenmoController(JdbcUserDao userdao, JdbcAccountDao accountDao, TransferDao transferDao) {
+    public TenmoController(UserDao userdao, AccountDao accountDao, TransferDao transferDao) {
         this.userDao = userdao;
         this.accountDao = accountDao;
         this.transferDao = transferDao;
@@ -45,25 +42,19 @@ public class TenmoController {
         return accountDao.getBalance(id);
     }
 
+    // Todo make validations for transfer model
     @RequestMapping(path = "transfers", method = RequestMethod.PUT)
     public void transfer(/*@Valid*/ @RequestBody Transfer transfer) {
-        // Todo make validations for transfer model
-
         transferDao.transferMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
-
-
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
     public List<Transfer> viewTransfers(@PathVariable(name = "id") int userId) throws TransferNotFoundException {
         return transferDao.viewTransfers(userId);
     }
-
     // TODO ask Ben about Principal
     // TODO make id optional
     // TODO only print transfers based on Principal
-
-
 }
 
 
