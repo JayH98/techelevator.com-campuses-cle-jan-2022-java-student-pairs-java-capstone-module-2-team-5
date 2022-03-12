@@ -121,6 +121,10 @@ public class ConsoleService {
         scanner.nextLine();
     }
 
+    public void transferNotFoundMessage() {
+        System.out.println("\nTransaction not found!!\n");
+    }
+
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }

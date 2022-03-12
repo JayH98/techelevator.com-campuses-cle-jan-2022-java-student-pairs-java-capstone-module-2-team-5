@@ -1,8 +1,8 @@
 package com.techelevator.tenmo.model;
 
 public class Transfer {
-    // TODO possibly change transferType from String to TransferType enum
-    // TODO possibly change transferStatus from String to TransferStatus enum
+    //TODO possibly change transferType from String to TransferType enum
+    //TODO possibly change transferStatus from String to TransferStatus enum
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
@@ -12,6 +12,7 @@ public class Transfer {
     private int accountToId;
     private String accountFromUsername;
     private String accountToUsername;
+    private double amount;
 
     public String getTransferType() {
         return transferType;
@@ -28,9 +29,6 @@ public class Transfer {
     public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
     }
-
-    private double amount;
-
 
     public int getTransferId() {
         return transferId;
@@ -101,8 +99,8 @@ public class Transfer {
         return "Id: " + getTransferId() + "\n" +
                 "From: " + getAccountFromUsername() + "\n" +
                 "To: " + getAccountToUsername() + "\n" +
-                "Type: " + getTransferTypeId() + "\n" +
-                "Status: " + getTransferStatusId()+ "\n" +
+                "Type: " + getTransferType() + "\n" +
+                "Status: " + getTransferStatus()+ "\n" +
                 "Amount: " + getAmount() + "\n";
     }
 }

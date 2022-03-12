@@ -115,18 +115,36 @@ public class App {
     private void viewTransferHistory() {
         Transfer[] history = tenmoService.getTransferHistory(currentUser.getUser().getId());
         // Print the transfer history header even if there are no transfers
-        consoleService.printTransferHistoryHeader();
         if (history != null) {
-            for (Transfer transfer : history) {
-                String display = transferDisplayString(transfer);
-                consoleService.printString(display);
+            while (true) {
+                consoleService.printTransferHistoryHeader();
+                for (Transfer transfer : history) {
+                    String display = transferDisplayString(transfer);
+                    consoleService.printString(display);
+                }
+
+                // TODO refactor into separate private helper method
+                int transferId = consoleService.promptForInt("\nPlease enter transfer ID to view details (0 to cancel): ");
+                if (transferId == 0)
+                    break;
+                boolean found = false;
+                for (Transfer transfer : history) {
+                    if (transfer.getTransferId() == transferId) {
+                        consoleService.printTransferHeader();
+                        consoleService.printString(transfer.toString());
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    consoleService.transferNotFoundMessage();
+                }
             }
         }
-        // TODO create a model Class for Transfer
-        //todo tenmoService returns an array of transfers
-        // todo pass transfer array to consoleService
-
     }
+
+//    private void printSingleTransfer(Transfer transfer) {
+//
+//    }
 
     private String transferDisplayString(Transfer transfer) {
         // Create empty display string
