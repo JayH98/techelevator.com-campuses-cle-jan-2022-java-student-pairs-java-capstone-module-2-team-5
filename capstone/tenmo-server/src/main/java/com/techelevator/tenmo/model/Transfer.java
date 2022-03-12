@@ -12,7 +12,6 @@ public class Transfer {
     private String accountToUsername;
     private double amount;
 
-
     public int getTransferId() {
         return transferId;
     }
@@ -25,16 +24,16 @@ public class Transfer {
         return transferType;
     }
 
-    public void setTransferType(String transferTypeDesc) {
-        this.transferType = transferTypeDesc;
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
     }
 
     public String getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(String transferStatusDesc) {
-        this.transferStatus = transferStatusDesc;
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
     }
 
     public int getAccountFromId() {
