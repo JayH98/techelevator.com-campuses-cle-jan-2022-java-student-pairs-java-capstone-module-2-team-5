@@ -101,6 +101,12 @@ public class ConsoleService {
                 "-------------------------------------------");
     }
 
+    public void printTransferHeader() {
+        System.out.println("--------------------------------------------\n" +
+                "Transfer Details\n" +
+                "--------------------------------------------");
+    }
+
     public void printString(String string) {
         System.out.println(string);
     }
