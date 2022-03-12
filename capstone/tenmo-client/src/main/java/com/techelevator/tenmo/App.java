@@ -166,8 +166,8 @@ public class App {
         return display;
     }
 
-    private void displayUsers(User[] users){
-        for(User user : users){
+    private void displayUsers(User[] users) {
+        for (User user : users) {
             consoleService.printString(user.toString());
         }
     }
@@ -195,12 +195,12 @@ public class App {
         // getting the balance
         double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
         // check the amount must be greater than $0.00
-        if(moneyToTransfer <= 0.00){
+        if (moneyToTransfer <= 0.00) {
             consoleService.printString("This amount is not valid.");
             return;
         }
         // check the amount cannot be more than the balance
-        if(moneyToTransfer > currentUserBalance){
+        if (moneyToTransfer > currentUserBalance) {
             consoleService.printString("This amount is not valid.");
             return;
         }
@@ -210,18 +210,18 @@ public class App {
         // make sure toId is valid
 
         boolean isValid = false;
-        for(User user : users){
-            if(user.getId() == toId){
+        for (User user : users) {
+            if (user.getId() == toId) {
                 isValid = true;
                 break;
             }
         }
         // make checks id cannot be the same
-        if(isValid && currentUser.getUser().getId() != toId){
+        if (isValid && currentUser.getUser().getId() != toId) {
             //set the toId in the transferObject
             transfer.setToUserId(toId);
             tenmoService.sendMoney(transfer);
-        }else {
+        } else {
             consoleService.printString("Invalid Id");
         }
     }

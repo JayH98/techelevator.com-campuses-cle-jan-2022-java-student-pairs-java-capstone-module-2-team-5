@@ -1,5 +1,7 @@
 package com.techelevator.tenmo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Transfer {
     //TODO possibly change transferType from String to TransferType enum
     //TODO possibly change transferStatus from String to TransferStatus enum
@@ -13,7 +15,9 @@ public class Transfer {
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
+    @JsonProperty("from_user_id")
     private long fromUserId;
+    @JsonProperty("to_user_id")
     private long toUserId;
 
     public long getFromUserId() {
