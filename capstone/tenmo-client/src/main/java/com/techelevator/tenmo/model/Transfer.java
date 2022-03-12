@@ -1,7 +1,9 @@
 package com.techelevator.tenmo.model;
 
 public class Transfer {
-
+    //TODO get transferTypeId as a String as transferType
+    //TODO getTransferStatusId as a String as transferStatus
+    //TODO make getters and setters of both variables
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
@@ -74,5 +76,15 @@ public class Transfer {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + getTransferId() + "\n" +
+                " From: " + getAccountFromUsername() + "\n" +
+                " To: " + getAccountToUsername() + "\n" +
+                " Type: " + getTransferTypeId() + "\n" +
+                " Status: " + getTransferStatusId()+ "\n" +
+                " Amount: " + getAmount() + "\n";
     }
 }
