@@ -87,6 +87,12 @@ public class ConsoleService {
                 NumberFormat.getCurrencyInstance().format(balance));
     }
     //todo send TE bucks display Method in ConsolService.java
+    public void printSendTeBucksHeader() {
+        System.out.println("-------------------------------------------\n" +
+                "Users\n" +
+                "ID          Name\n" +
+                "-------------------------------------------");
+    }
 
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java

@@ -105,7 +105,7 @@ public class App {
 
     private void viewCurrentBalance() {
         double balance = tenmoService.getUserBalance(currentUser.getUser().getId());
-        consoleService.displayCurrentBalance(balance);
+        consoleService.printCurrentBalance(balance);
         // TODO only view our current balance as double to change to Big Decimal
     }
 
@@ -128,8 +128,7 @@ public class App {
         /*todo have transfer() return a boolean on success or failure and send
         boolean to consoleService to print message
          */
-
-
+        consoleService.printSendTeBucksHeader();
     }
 
     private void requestBucks() {
