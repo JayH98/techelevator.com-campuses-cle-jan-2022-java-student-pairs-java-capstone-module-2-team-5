@@ -101,6 +101,10 @@ public class ConsoleService {
                 "-------------------------------------------");
     }
 
+    public void printString(String string) {
+        System.out.println(string);
+    }
+
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java
     //todo (optional) create the requesting TE bucks display in ConsolService.java
