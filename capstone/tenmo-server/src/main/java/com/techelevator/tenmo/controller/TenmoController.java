@@ -50,8 +50,6 @@ public class TenmoController {
         // Todo make validations for transfer model
 
         transferDao.transferMoney(transfer.getFrom(), transfer.getTo(), transfer.getAmount());
-
-
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
