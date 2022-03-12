@@ -123,7 +123,7 @@ public class App {
                     consoleService.printString(display);
                 }
 
-                // TODO refactor into separate private helper method
+                // TODO refactor into separate private helper method???
                 int transferId = consoleService.promptForInt("\nPlease enter transfer ID to view details (0 to cancel): ");
                 if (transferId == 0)
                     break;
@@ -141,10 +141,6 @@ public class App {
             }
         }
     }
-
-//    private void printSingleTransfer(Transfer transfer) {
-//
-//    }
 
     private String transferDisplayString(Transfer transfer) {
         // Create empty display string
