@@ -81,10 +81,10 @@ public class Transfer {
     @Override
     public String toString() {
         return "Id: " + getTransferId() + "\n" +
-                " From: " + getAccountFromUsername() + "\n" +
-                " To: " + getAccountToUsername() + "\n" +
-                " Type: " + getTransferTypeId() + "\n" +
-                " Status: " + getTransferStatusId()+ "\n" +
-                " Amount: " + getAmount() + "\n";
+                "From: " + getAccountFromUsername() + "\n" +
+                "To: " + getAccountToUsername() + "\n" +
+                "Type: " + getTransferTypeId() + "\n" +
+                "Status: " + getTransferStatusId()+ "\n" +
+                "Amount: " + getAmount() + "\n";
     }
 }

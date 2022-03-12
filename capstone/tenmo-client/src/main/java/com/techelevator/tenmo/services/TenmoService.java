@@ -33,7 +33,7 @@ public class TenmoService {
         return balance;
     }
 
-    public Transfer[] getTransferHistory(int userId) {
+    public Transfer[] getTransferHistory(long userId) {
         Transfer[] transfers = null;
         try {
             ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId,
