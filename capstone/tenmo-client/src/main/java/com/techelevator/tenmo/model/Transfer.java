@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.model;
 
 public class Transfer {
+
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
