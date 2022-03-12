@@ -27,6 +27,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -53,11 +54,28 @@ public class App {
         }
     }
 
+    //String username = consoleService.promptForString("Username: ");
+    //        String password = consoleService.promptForString("Password: ");
+    //        String token = authenticationService.login(username, password);
+    //        if (token != null) {
+    //            auctionService.setAuthToken(token);
+    //        } else {
+    //            consoleService.printErrorMessage();
+    //        }
+
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
+
         if (currentUser == null) {
             consoleService.printErrorMessage();
+        } else {
+            String token = currentUser.getToken();
+            if (token != null) {
+                tenmoService.setAuthToken(currentUser.getToken());
+            } else {
+                consoleService.printErrorMessage();
+            }
         }
     }
 
@@ -85,39 +103,38 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
-        //double balance = tenmoService.getCurrentUserBalance();
-        //consoleService.printIt(balance);
+    private void viewCurrentBalance() {
+        double balance = tenmoService.getUserBalance(currentUser.getUser().getId());
+        consoleService.displayCurrentBalance(balance);
         // TODO only view our current balance as double to change to Big Decimal
+    }
 
-	}
-
-	private void viewTransferHistory() {
+    private void viewTransferHistory() {
         //Transfer[] history = tenmoService.getTransferHistory();
         //consoleService.printIt(history);
-		// TODO create a model Class for Transfer
+        // TODO create a model Class for Transfer
         //todo tenmoService returns an array of transfers
         // todo pass transfer array to consoleService
-		
-	}
 
-	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	private void sendBucks() {
-		// TODO have tenmoService call with transfer( fromAccountId, toAccountId, amount)
+    private void viewPendingRequests() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void sendBucks() {
+        // TODO have tenmoService call with transfer( fromAccountId, toAccountId, amount)
         /*todo have transfer() return a boolean on success or failure and send
         boolean to consoleService to print message
          */
 
-		
-	}
 
-	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    private void requestBucks() {
+        // TODO Auto-generated method stub
+
+    }
 
 }
