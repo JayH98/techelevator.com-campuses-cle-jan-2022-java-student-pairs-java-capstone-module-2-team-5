@@ -49,7 +49,7 @@ public class TenmoController {
     public void transfer(/*@Valid*/ @RequestBody Transfer transfer) {
         // Todo make validations for transfer model
 
-        transferDao.transferMoney(transfer.getAccountFromId(), transfer.getAccountToID(), transfer.getAmount());
+        transferDao.transferMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
 
 
     }
