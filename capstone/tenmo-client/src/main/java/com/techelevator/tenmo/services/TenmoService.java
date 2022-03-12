@@ -22,7 +22,7 @@ public class TenmoService {
         this.baseUrl = url;
     }
 
-    public double getUserBalance(int userId) {
+    public double getUserBalance(long userId) {
         double balance = 0.0;
         try {
             ResponseEntity<Double> response = restTemplate.exchange(baseUrl + "users/" + userId + "/balance", HttpMethod.GET, makeAuthEntity(), Double.class);

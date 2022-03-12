@@ -87,7 +87,8 @@ public class ConsoleService {
         System.out.println("Your current account balance is: " +
                 NumberFormat.getCurrencyInstance().format(balance));
     }
-    //todo sent TE bucks display Method in ConsolService.java
+    //todo send TE bucks display Method in ConsolService.java
+
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java
     //todo (optional) create the requesting TE bucks display in ConsolService.java
