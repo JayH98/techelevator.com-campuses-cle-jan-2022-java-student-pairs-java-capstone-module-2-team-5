@@ -1,11 +1,13 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
+
 
 public class TenmoService {
 
@@ -22,10 +24,23 @@ public class TenmoService {
         this.baseUrl = url;
     }
 
+    public User[] listAllUsers() {
+        User[] users = null;
+        try {
+            ResponseEntity<User[]> response = restTemplate.exchange(baseUrl + "users", HttpMethod.GET,
+                    makeAuthEntity(), User[].class);
+            users = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return users;
+    }
+
     public double getUserBalance(long userId) {
         double balance = 0.0;
         try {
-            ResponseEntity<Double> response = restTemplate.exchange(baseUrl + "users/" + userId + "/balance", HttpMethod.GET, makeAuthEntity(), Double.class);
+            ResponseEntity<Double> response = restTemplate.exchange(baseUrl + "users/" + userId + "/balance",
+                    HttpMethod.GET, makeAuthEntity(), Double.class);
             balance = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -57,6 +72,9 @@ public class TenmoService {
         }
         return success;
     }
+
+
+
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();

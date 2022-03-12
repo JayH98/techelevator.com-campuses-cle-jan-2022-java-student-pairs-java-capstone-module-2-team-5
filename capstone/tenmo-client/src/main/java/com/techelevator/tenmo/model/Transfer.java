@@ -13,6 +13,24 @@ public class Transfer {
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
+    private long fromUserId;
+    private long toUserId;
+
+    public long getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(long fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public long getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(long toUserId) {
+        this.toUserId = toUserId;
+    }
 
     public String getTransferType() {
         return transferType;
