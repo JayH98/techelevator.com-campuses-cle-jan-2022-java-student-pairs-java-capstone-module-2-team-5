@@ -43,6 +43,7 @@ public class JdbcTransferDao implements TransferDao {
     public List<Transfer> viewTransfers(int userId) throws TransferNotFoundException {
         List<Transfer> transfers = new ArrayList<>();
 
+        boolean gotRowSet = false;
         String sql = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount " +
                 "FROM transfer " +
                 "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +
@@ -51,17 +52,19 @@ public class JdbcTransferDao implements TransferDao {
                 "WHERE user_id = ?;";
 
         SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
-        if (rowset.next()) {
             while (rowset.next()) {
-                Transfer transfer = mapTransferToRowset(rowset);
-                transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
-                transfer.setAccountToUsername(getUserRowset(transfer.getAccountToId()).getString("username"));
+                gotRowSet = true;
 
-                transfers.add(transfer);
+                    Transfer transfer = mapTransferToRowset(rowset);
+                    transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
+                    transfer.setAccountToUsername(getUserRowset(transfer.getAccountToId()).getString("username"));
+
+                    transfers.add(transfer);
+                }
+            if(gotRowSet) {
+                return transfers;
             }
-            return transfers;
-        }
-        else throw new TransferNotFoundException("Error. No such transfer exists or you do not have permission to view it.");
+            throw new TransferNotFoundException("Error. No such transfer exists or you do not have permission to view it.");
     }
 
     private void createTransfer(int fromUserAccountId, int toUserAccountId, double transferAmount) {

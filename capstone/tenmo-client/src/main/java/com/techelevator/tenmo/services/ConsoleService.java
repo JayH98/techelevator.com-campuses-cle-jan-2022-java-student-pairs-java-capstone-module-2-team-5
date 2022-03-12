@@ -71,11 +71,11 @@ public class ConsoleService {
     }
 
     //How much money do I want to send
-    public BigDecimal promptForBigDecimal(String prompt) {
+    public Double promptForDouble(String prompt) {
         System.out.print(prompt);
         while (true) {
             try {
-                return new BigDecimal(scanner.nextLine());
+                return Double.parseDouble(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a decimal number.");
             }
@@ -87,7 +87,7 @@ public class ConsoleService {
                 NumberFormat.getCurrencyInstance().format(balance));
     }
     //todo send TE bucks display Method in ConsolService.java
-    public void printSendTeBucksHeader() {
+    public void printUsersHeader() {
         System.out.println("-------------------------------------------\n" +
                 "Users\n" +
                 "ID          Name\n" +
@@ -107,6 +107,7 @@ public class ConsoleService {
                 "--------------------------------------------");
     }
 
+
     public void printString(String string) {
         System.out.println(string);
     }
@@ -120,6 +121,8 @@ public class ConsoleService {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
+
+
 
     public void transferNotFoundMessage() {
         System.out.println("\nTransaction not found!!\n");
