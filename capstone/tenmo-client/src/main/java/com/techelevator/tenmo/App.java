@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -111,7 +112,7 @@ public class App {
 
     private void viewTransferHistory() {
         //Transfer[] history = tenmoService.getTransferHistory();
-        //consoleService.printIt(history);
+        //consoleService.printTransferHistory(history);
         // TODO create a model Class for Transfer
         //todo tenmoService returns an array of transfers
         // todo pass transfer array to consoleService
