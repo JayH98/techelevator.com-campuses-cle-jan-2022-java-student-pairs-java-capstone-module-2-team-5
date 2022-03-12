@@ -4,6 +4,7 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -82,7 +83,12 @@ public class ConsoleService {
     }
 
     //todo prompt for current balance in ConsolService.java
-    //todo sent TE bucks display Method in ConsolService.java
+    public void displayCurrentBalance(double balance) {
+        System.out.println("Your current account balance is: " +
+                NumberFormat.getCurrencyInstance().format(balance));
+    }
+    //todo send TE bucks display Method in ConsolService.java
+
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java
     //todo (optional) create the requesting TE bucks display in ConsolService.java
