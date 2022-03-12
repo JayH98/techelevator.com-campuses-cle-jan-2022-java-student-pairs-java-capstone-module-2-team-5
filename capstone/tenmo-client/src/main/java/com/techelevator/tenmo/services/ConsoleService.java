@@ -94,6 +94,13 @@ public class ConsoleService {
                 "-------------------------------------------");
     }
 
+    public void printTransferHistoryHeader() {
+        System.out.println("-------------------------------------------\n" +
+                "Transfers\n" +
+                "ID          From/To                 Amount\n" +
+                "-------------------------------------------");
+    }
+
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java
     //todo (optional) create the requesting TE bucks display in ConsolService.java
