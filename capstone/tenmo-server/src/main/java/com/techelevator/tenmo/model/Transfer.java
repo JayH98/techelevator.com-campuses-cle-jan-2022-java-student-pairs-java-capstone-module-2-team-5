@@ -2,10 +2,12 @@ package com.techelevator.tenmo.model;
 
 public class Transfer {
     private int transferId;
-    private int transferTypeId;
-    private int transferStatusId;
+    private String transferType;
+    private String transferStatus;
     private int accountFromId;
     private int accountToId;
+    private int fromUserId;
+    private int toUserId;
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
@@ -19,20 +21,20 @@ public class Transfer {
         this.transferId = transferId;
     }
 
-    public int getTransferTypeId() {
-        return transferTypeId;
+    public String getTransferType() {
+        return transferType;
     }
 
-    public void setTransferTypeId(int transferTypeId) {
-        this.transferTypeId = transferTypeId;
+    public void setTransferType(String transferTypeDesc) {
+        this.transferType = transferTypeDesc;
     }
 
-    public int getTransferStatusId() {
-        return transferStatusId;
+    public String getTransferStatus() {
+        return transferStatus;
     }
 
-    public void setTransferStatusId(int transferStatusId) {
-        this.transferStatusId = transferStatusId;
+    public void setTransferStatus(String transferStatusDesc) {
+        this.transferStatus = transferStatusDesc;
     }
 
     public int getAccountFromId() {
@@ -43,12 +45,28 @@ public class Transfer {
         this.accountFromId = accountFromId;
     }
 
-    public int getAccountToID() {
+    public int getAccountToId() {
         return accountToId;
     }
 
-    public void setAccountToId(int accountToID) {
-        this.accountToId = accountToID;
+    public void setAccountToId(int accountToId) {
+        this.accountToId = accountToId;
+    }
+
+    public int getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public int getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
     }
 
     public String getAccountFromUsername() {

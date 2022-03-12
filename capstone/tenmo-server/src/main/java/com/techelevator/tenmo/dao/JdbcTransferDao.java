@@ -43,8 +43,10 @@ public class JdbcTransferDao implements TransferDao {
     public List<Transfer> viewTransfers(int userId) throws TransferNotFoundException {
         List<Transfer> transfers = new ArrayList<>();
 
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount " +
+        String sql = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount " +
                 "FROM transfer " +
+                "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +
+                "JOIN transfer_status ON transfer.transfer_status_id = transfer_status.transfer_status_id " +
                 "JOIN account ON transfer.account_from = account.account_id OR transfer.account_to = account.account_id " +
                 "WHERE user_id = ?;";
 
@@ -53,7 +55,7 @@ public class JdbcTransferDao implements TransferDao {
             while (rowset.next()) {
                 Transfer transfer = mapTransferToRowset(rowset);
                 transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
-                transfer.setAccountToUsername(getUserRowset(transfer.getAccountToID()).getString("username"));
+                transfer.setAccountToUsername(getUserRowset(transfer.getAccountToId()).getString("username"));
 
                 transfers.add(transfer);
             }
@@ -84,8 +86,8 @@ public class JdbcTransferDao implements TransferDao {
         Transfer transfer = new Transfer();
 
         transfer.setTransferId(rowset.getInt("transfer_id"));
-        transfer.setTransferTypeId(rowset.getInt("transfer_type_id"));
-        transfer.setTransferStatusId(rowset.getInt("transfer_status_id"));
+        transfer.setTransferType(rowset.getString("transfer_type_desc"));
+        transfer.setTransferStatus(rowset.getString("transfer_status_desc"));
         transfer.setAccountFromId(rowset.getInt("account_from"));
         transfer.setAccountToId(rowset.getInt("account_to"));
         transfer.setAmount(rowset.getDouble("amount"));

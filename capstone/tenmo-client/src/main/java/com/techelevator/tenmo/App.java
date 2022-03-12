@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -105,13 +106,17 @@ public class App {
 
     private void viewCurrentBalance() {
         double balance = tenmoService.getUserBalance(currentUser.getUser().getId());
-        consoleService.displayCurrentBalance(balance);
+        consoleService.printCurrentBalance(balance);
         // TODO only view our current balance as double to change to Big Decimal
     }
 
     private void viewTransferHistory() {
-        //Transfer[] history = tenmoService.getTransferHistory();
-        //consoleService.printIt(history);
+        Transfer[] history = tenmoService.getTransferHistory(currentUser.getUser().getId());
+        // Print the transfer history header even if there are no transfers
+        consoleService.printTransferHistoryHeader();
+
+
+        //consoleService.printTransferHistory(history);
         // TODO create a model Class for Transfer
         //todo tenmoService returns an array of transfers
         // todo pass transfer array to consoleService
@@ -128,8 +133,7 @@ public class App {
         /*todo have transfer() return a boolean on success or failure and send
         boolean to consoleService to print message
          */
-
-
+        consoleService.printSendTeBucksHeader();
     }
 
     private void requestBucks() {

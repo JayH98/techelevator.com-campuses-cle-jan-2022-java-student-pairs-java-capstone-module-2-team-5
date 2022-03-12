@@ -82,12 +82,34 @@ public class ConsoleService {
         }
     }
 
-    //todo prompt for current balance in ConsolService.java
-    public void displayCurrentBalance(double balance) {
+    public void printCurrentBalance(double balance) {
         System.out.println("Your current account balance is: " +
                 NumberFormat.getCurrencyInstance().format(balance));
     }
     //todo send TE bucks display Method in ConsolService.java
+    public void printSendTeBucksHeader() {
+        System.out.println("-------------------------------------------\n" +
+                "Users\n" +
+                "ID          Name\n" +
+                "-------------------------------------------");
+    }
+
+    public void printTransferHistoryHeader() {
+        System.out.println("-------------------------------------------\n" +
+                "Transfers\n" +
+                "ID          From/To                 Amount\n" +
+                "-------------------------------------------");
+    }
+
+    public void printTransferHeader() {
+        System.out.println("--------------------------------------------\n" +
+                "Transfer Details\n" +
+                "--------------------------------------------");
+    }
+
+    public void printString(String string) {
+        System.out.println(string);
+    }
 
     //todo write the useTransfers display in ConsolService.java
     //todo write the transferId display in ConsolService.java
