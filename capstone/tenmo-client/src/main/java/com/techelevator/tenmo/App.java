@@ -111,7 +111,11 @@ public class App {
     }
 
     private void viewTransferHistory() {
-        //Transfer[] history = tenmoService.getTransferHistory();
+        Transfer[] history = tenmoService.getTransferHistory(currentUser.getUser().getId());
+        // Print the transfer history header even if there are no transfers
+        consoleService.printTransferHistoryHeader();
+
+
         //consoleService.printTransferHistory(history);
         // TODO create a model Class for Transfer
         //todo tenmoService returns an array of transfers
