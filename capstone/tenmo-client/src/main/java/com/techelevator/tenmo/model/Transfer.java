@@ -1,16 +1,34 @@
 package com.techelevator.tenmo.model;
 
 public class Transfer {
-    //TODO get transferTypeId as a String as transferType
-    //TODO getTransferStatusId as a String as transferStatus
-    //TODO make getters and setters of both variables
+    // TODO possibly change transferType from String to TransferType enum
+    // TODO possibly change transferStatus from String to TransferStatus enum
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
+    private String transferType;
+    private String transferStatus;
     private int accountFromId;
     private int accountToId;
     private String accountFromUsername;
     private String accountToUsername;
+
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
+
+    public String getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
     private double amount;
 
 
@@ -46,7 +64,7 @@ public class Transfer {
         this.accountFromId = accountFromId;
     }
 
-    public int getAccountToID() {
+    public int getAccountToId() {
         return accountToId;
     }
 
