@@ -17,14 +17,15 @@ public class TenmoService {
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
-    public TenmoService(String url){
+
+    public TenmoService(String url) {
         this.baseUrl = url;
     }
 
     public double getUserBalance(int userId) {
         double balance = 0.0;
         try {
-            ResponseEntity<Double> response = restTemplate.exchange(baseUrl + "users/" + userId + "balance", HttpMethod.GET, makeAuthEntity(), Double.class);
+            ResponseEntity<Double> response = restTemplate.exchange(baseUrl + "users/" + userId + "/balance", HttpMethod.GET, makeAuthEntity(), Double.class);
             balance = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -35,7 +36,10 @@ public class TenmoService {
     public Transfer[] getTransfersInvolvingUser(int userId) {
         Transfer[] transfers = null;
         try {
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId , HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId,
+                    HttpMethod.GET,
+                    makeAuthEntity(),
+                    Transfer[].class);
             transfers = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -46,7 +50,7 @@ public class TenmoService {
     public boolean sendMoney(Transfer transfer) {
         boolean success = false;
         try {
-            restTemplate.put(baseUrl + "transfers" ,  makeTransferEntity(transfer), Transfer[].class);
+            restTemplate.put(baseUrl + "transfers", makeTransferEntity(transfer), Transfer[].class);
             success = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -66,11 +70,6 @@ public class TenmoService {
         headers.setBearerAuth(authToken);
         return new HttpEntity<>(headers);
     }
-
-
-
-
-
 
 
 }
