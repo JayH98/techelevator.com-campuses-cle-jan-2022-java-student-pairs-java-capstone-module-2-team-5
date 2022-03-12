@@ -50,7 +50,7 @@ public class TenmoService {
     public boolean sendMoney(Transfer transfer) {
         boolean success = false;
         try {
-            restTemplate.put(baseUrl + "transfers", makeTransferEntity(transfer), Transfer[].class);
+            restTemplate.put(baseUrl + "transfers", makeTransferEntity(transfer), Transfer.class);
             success = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

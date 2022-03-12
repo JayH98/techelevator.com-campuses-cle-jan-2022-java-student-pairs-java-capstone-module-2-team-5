@@ -46,10 +46,12 @@ public class TenmoController {
     }
 
     @RequestMapping(path = "transfers", method = RequestMethod.PUT)
-    public void transfer(/*@Valid*/ @RequestBody TransferDTO transfer) {
+    public void transfer(/*@Valid*/ @RequestBody Transfer transfer) {
         // Todo make validations for transfer model
 
-        transferDao.transferMoney(transfer.getFrom(), transfer.getTo(), transfer.getAmount());
+        transferDao.transferMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
+
+
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
