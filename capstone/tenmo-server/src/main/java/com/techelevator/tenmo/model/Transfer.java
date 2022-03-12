@@ -1,12 +1,16 @@
 package com.techelevator.tenmo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Transfer {
     private int transferId;
     private String transferType;
     private String transferStatus;
     private int accountFromId;
     private int accountToId;
+    @JsonProperty("from_user_id")
     private int fromUserId;
+    @JsonProperty("to_user_id")
     private int toUserId;
     private String accountFromUsername;
     private String accountToUsername;
