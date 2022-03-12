@@ -2,24 +2,24 @@ package com.techelevator.tenmo.model;
 
 public class TransferDTO {
 
-    private int from;
-    private int to;
+    private int fromUserId;
+    private int toUserId;
     private double amount;
 
     public int getFrom() {
-        return from;
+        return fromUserId;
     }
 
     public void setFrom(int from) {
-        this.from = from;
+        this.fromUserId = from;
     }
 
     public int getTo() {
-        return to;
+        return toUserId;
     }
 
     public void setTo(int to) {
-        this.to = to;
+        this.toUserId = to;
     }
 
     public double getAmount() {

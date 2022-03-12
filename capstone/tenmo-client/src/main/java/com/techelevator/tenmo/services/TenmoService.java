@@ -6,26 +6,32 @@ import org.springframework.web.client.RestTemplate;
 
 public class TenmoService {
 
-private static final String API_BASE_URL = "http://localhost:8080/";
-private final RestTemplate restTemplate = new RestTemplate();
-private String authToken;
+    private final String baseUrl;
+    private final RestTemplate restTemplate = new RestTemplate();
 
-public void setAuthToken(String authToken) { this.authToken = authToken;}
+    private String authToken = null;
 
-
-public Double getCurrentUserBalance() {
-    Double currentBalance = null;
-    try {
-        restT
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
-}
-
-
-    private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authToken);
-        return new HttpEntity<>(headers);
+    public TenmoService(String url){
+        this.baseUrl = url;
     }
 
 
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
