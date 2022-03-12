@@ -7,6 +7,8 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TenmoService;
 
+import java.text.NumberFormat;
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
@@ -114,13 +116,39 @@ public class App {
         Transfer[] history = tenmoService.getTransferHistory(currentUser.getUser().getId());
         // Print the transfer history header even if there are no transfers
         consoleService.printTransferHistoryHeader();
-
-
-        //consoleService.printTransferHistory(history);
+        if (history != null) {
+            for (Transfer transfer : history) {
+                String display = transferDisplayString(transfer);
+                consoleService.printString(display);
+            }
+        }
         // TODO create a model Class for Transfer
         //todo tenmoService returns an array of transfers
         // todo pass transfer array to consoleService
 
+    }
+
+    private String transferDisplayString(Transfer transfer) {
+        // Create empty display string
+        String display = "";
+
+        // Add id to string
+        display += transfer.getTransferId() + "\t";
+
+        String currentUserName = currentUser.getUser().getUsername();
+        String fromName = transfer.getAccountFromUsername();
+        String toName = transfer.getAccountToUsername();
+
+        if (currentUserName.equals(fromName)) {
+            display += "TO: " + toName + "\t";
+        } else {
+            display += "FROM: " + fromName + "\t";
+        }
+
+        double amount = transfer.getAmount();
+        display += NumberFormat.getCurrencyInstance().format(amount);
+
+        return display;
     }
 
     private void viewPendingRequests() {
