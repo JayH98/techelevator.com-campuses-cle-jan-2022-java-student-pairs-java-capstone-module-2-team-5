@@ -7,8 +7,8 @@ public enum TransferStatus {
 
     private int transferStatusCode;
 
-    TransferStatus(int transferStatusCodestatusCode) {
-        this.transferStatusCode = transferStatusCodestatusCode;
+    TransferStatus(int transferStatusCode) {
+        this.transferStatusCode = transferStatusCode;
     }
 
     public int getTransferStatusCode() { return transferStatusCode; }
