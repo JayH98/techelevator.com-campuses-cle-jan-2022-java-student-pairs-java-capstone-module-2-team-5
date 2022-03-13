@@ -189,7 +189,7 @@ public class App {
                 // Display each pending transfer
                 for (Transfer transfer : pendingTransfers) {
                     // TODO BUG!!!! Need different formatting for pending transfer!!!
-                    String display = transferDisplayString(transfer);
+                    String display = pendingRequestsDisplayString(transfer);
                     consoleService.printString(display);
                 }
 
@@ -217,6 +217,12 @@ public class App {
         }
     }
 
+    private String pendingRequestDisplayString(Transfer transfer) {
+        return transfer.getTransferId() + "\t" +
+                transfer.getAccountToUsername() + "\t" +
+                NumberFormat.getCurrencyInstance().format(transfer.getAmount());
+    }
+
     private void handleTransferRequest(Transfer transfer) {
         // TODO update database and approve of transfer
         // tenmoService call to update database
@@ -236,7 +242,6 @@ public class App {
                     // Check current users balance
                     if (checkBalance(transfer.getAmount())) {
                         tenmoService.approveRequest(transfer);
-
                     } else {
                         consoleService.printString("\nInsufficient funds in your balance");
                     }
