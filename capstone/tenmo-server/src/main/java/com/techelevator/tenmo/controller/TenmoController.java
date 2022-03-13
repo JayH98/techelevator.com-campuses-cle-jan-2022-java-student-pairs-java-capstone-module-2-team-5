@@ -59,9 +59,16 @@ public class TenmoController {
     public List<Transfer> viewTransfers(@PathVariable(name = "id") int userId) throws TransferNotFoundException {
         return transferDao.viewTransfers(userId);
     }
-    // TODO ask Ben about Principal
-    // TODO make id optional
-    // TODO only print transfers based on Principal
+    // TODO ask Ben about Principal?
+    // TODO make id optional?
+    // TODO only print transfers based on Principal?
+
+    @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)
+    public List<Transfer> viewPendingTransferRequests(@PathVariable int id) throws TransferNotFoundException {
+        // Alternate implementation could get all transfers by id and then use Java logic to filter list
+        // filter : transferType.equals("Pending");
+        return transferDao.viewPendingTransfers(id);
+    }
 }
 
 

@@ -124,7 +124,7 @@ public class App {
                     consoleService.printString(display);
                 }
 
-                // TODO refactor into separate private helper method
+                // TODO refactor into separate private helper method???
                 int transferId = consoleService.promptForInt("\nPlease enter transfer ID to view details (0 to cancel): ");
                 if (transferId == 0)
                     break;
@@ -142,10 +142,6 @@ public class App {
             }
         }
     }
-
-//    private void printSingleTransfer(Transfer transfer) {
-//
-//    }
 
     private String transferDisplayString(Transfer transfer) {
         // Create empty display string
@@ -170,8 +166,8 @@ public class App {
         return display;
     }
 
-    private void displayUsers(User[] users){
-        for(User user : users){
+    private void displayUsers(User[] users) {
+        for (User user : users) {
             consoleService.printString(user.toString());
         }
     }
@@ -179,7 +175,6 @@ public class App {
 
     private void viewPendingRequests() {
         // TODO Auto-generated method stub
-
     }
 
     private void sendBucks() {
@@ -200,12 +195,12 @@ public class App {
         // getting the balance
         double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
         // check the amount must be greater than $0.00
-        if(moneyToTransfer <= 0.00){
+        if (moneyToTransfer <= 0.00) {
             consoleService.printString("This amount is not valid.");
             return;
         }
         // check the amount cannot be more than the balance
-        if(moneyToTransfer > currentUserBalance){
+        if (moneyToTransfer > currentUserBalance) {
             consoleService.printString("This amount is not valid.");
             return;
         }
@@ -216,15 +211,15 @@ public class App {
         // make sure toId is valid
 
         boolean isValid = false;
-        for(User user : users){
-            if(user.getId() == toId){
+        for (User user : users) {
+            if (user.getId() == toId) {
                 isValid = true;
                 break;
             }
         }
         boolean transferSuccessful = false;
         // make checks id cannot be the same
-        if(isValid && currentUser.getUser().getId() != toId){
+        if (isValid && currentUser.getUser().getId() != toId) {
             //set the toId in the transferObject
             transfer.setToUserId(toId);
             transferSuccessful = tenmoService.sendMoney(transfer);
