@@ -62,6 +62,21 @@ public class TenmoService {
         return transfers;
     }
 
+    public Transfer[] getPendingTransfers(long userId) {
+        Transfer[] pendingTransfers = null;
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId + "/pending",
+                    HttpMethod.GET,
+                    makeAuthEntity(),
+                    Transfer[].class);
+            pendingTransfers = response.getBody();
+        }
+        catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return pendingTransfers;
+    }
+
     public boolean sendMoney(Transfer transfer) {
         boolean success = false;
         try {
