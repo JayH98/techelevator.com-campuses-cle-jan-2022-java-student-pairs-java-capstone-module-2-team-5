@@ -15,9 +15,7 @@ public class Transfer {
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
-    @JsonProperty("from_user_id")
     private long fromUserId;
-    @JsonProperty("to_user_id")
     private long toUserId;
 
     public long getFromUserId() {
