@@ -88,7 +88,7 @@ public class JdbcTransferDao implements TransferDao {
             // Client side needs username as a string, and not the user_id or transfer id as numbers
             Transfer transfer = mapTransferToRowset(rowSet);
             transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
-            transfer.setAccountToUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
+            transfer.setAccountToUsername(getUserRowset(transfer.getAccountToId()).getString("username"));
 
             pendingTransfers.add(transfer);
         }
