@@ -273,6 +273,7 @@ public class App {
             if (successTransfer == null) {
                 System.out.println("We're sorry. An error occurred during the transfer process. Returning to menu.");
             }
+            else System.out.println("Request sent successfully. Returning to menu");
         }else {
             consoleService.printString("Invalid Id");
         }
