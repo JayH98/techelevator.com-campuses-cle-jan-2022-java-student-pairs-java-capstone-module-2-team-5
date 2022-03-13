@@ -113,6 +113,8 @@ public class ConsoleService {
                 "0: Don't approve or reject\n" +
                 "------------------------------------------\n" +
                 "Please choose an option: ");
+        sc
+
     }
 
     public void printPendingRequestsHeader() {

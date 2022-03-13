@@ -9,6 +9,7 @@ import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TenmoService;
 
 import java.text.NumberFormat;
+import java.util.Scanner;
 
 public class App {
 
@@ -179,6 +180,16 @@ public class App {
 
     private void viewPendingRequests() {
         // TODO Auto-generated method stub
+        consoleService.printPendingRequestsHeader();
+        // TODO get list of pending requests for user, needs to be based on account_to in transfer table
+
+        System.out.println("Please enter transfer ID to approve/reject (0 to cancel): ");
+        int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
+
+        // TODO select transfer user picks from list of pending transfers
+
+        consoleService.printApprovalHeader();
+
 
     }
 
