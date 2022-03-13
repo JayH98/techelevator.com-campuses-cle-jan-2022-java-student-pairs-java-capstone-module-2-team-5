@@ -189,7 +189,7 @@ public class App {
                 // Display each pending transfer
                 for (Transfer transfer : pendingTransfers) {
                     // TODO BUG!!!! Need different formatting for pending transfer!!!
-                    String display = pendingRequestsDisplayString(transfer);
+                    String display = pendingRequestDisplayString(transfer);
                     consoleService.printString(display);
                 }
 
