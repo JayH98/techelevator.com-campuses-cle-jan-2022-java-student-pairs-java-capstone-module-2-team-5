@@ -152,7 +152,7 @@ public class JdbcTransferDao implements TransferDao {
     private SqlRowSet getUserRowset(int userId) {                 //Gets usernames for Transfer object using account_id
         String sql = "SELECT username FROM tenmo_user " +
                 "JOIN account ON tenmo_user.user_id = account.user_id " +
-                "WHERE account_id = ?";
+                "WHERE account_id = ?;";
 
         SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
         rowset.next();                                            // Used to prevent java.sql.SQLException "Invalid cursor position"
@@ -160,5 +160,47 @@ public class JdbcTransferDao implements TransferDao {
         return rowset;
     }
 
+    public void acceptRequest(Transfer transfer){
+        setTransferStatusToApproved(transfer);
+        subtractAmountFromSender(transfer);
+        addAmountToRequester(transfer);
+    }
+
+    @Override
+    public void rejectRequest(Transfer transfer) {
+        String sql = "UPDATE transfer  " +
+                "SET transfer_status_id = ?  " +
+                "WHERE transfer_id = ?;";
+        jdbcTemplate.update(sql, TransferStatus.REJECTED,
+                transfer.getAccountToId());
+    }
+
+
+    private void setTransferStatusToApproved(Transfer transfer){
+        String sql = "UPDATE transfer  " +
+                "SET transfer_status_id = ?  " +
+                "WHERE transfer_id = ?;";
+        jdbcTemplate.update(sql, TransferStatus.APPROVED,
+                transfer.getAccountToId());
+
+    }
+
+    private void subtractAmountFromSender(Transfer transfer){
+        String sql = "UPDATE account  " +
+                "SET balance = (balance - ?)" +
+                "WHERE account_id = ?;";
+        jdbcTemplate.update(sql, transfer.getAmount(),
+                transfer.getAccountFromId());
+
+    }
+
+    private void addAmountToRequester(Transfer transfer){
+        String sql = "UPDATE account  " +
+                "SET balance = (balance + ?)" +
+                "WHERE account_id = ?;";
+        jdbcTemplate.update(sql, transfer.getAmount(),
+                transfer.getAccountToId());
+
+    }
 
 }

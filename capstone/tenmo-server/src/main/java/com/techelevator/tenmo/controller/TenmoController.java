@@ -63,11 +63,22 @@ public class TenmoController {
     // TODO make id optional?
     // TODO only print transfers based on Principal?
 
-    @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)
+    @RequestMapping(path = "transfers/{id}/requests", method = RequestMethod.GET)
     public List<Transfer> viewPendingTransferRequests(@PathVariable int id) throws TransferNotFoundException {
         // Alternate implementation could get all transfers by id and then use Java logic to filter list
         // filter : transferType.equals("Pending");
         return transferDao.viewPendingTransfers(id);
+    }
+
+    @RequestMapping(path = "transfers/requests/accepted", method = RequestMethod.PUT)
+    public void acceptRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+        transferDao.acceptRequest(transfer);
+
+    }
+
+    @RequestMapping(path = "transfers/request/rejected", method = RequestMethod.PUT)
+    public void rejectRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+        transferDao.rejectRequest(transfer);
     }
 }
 
