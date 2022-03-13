@@ -176,41 +176,39 @@ public class App {
     private void viewPendingRequests() {
         // Loop: get pending transfers
         // re-query after to make sure it is removed from the list
+        // You must loop this query so pending transfers display properly when you approve of them
+
+
+        // Print the pending transfer header even if there are no transfers
         boolean loop = true;
         while (loop) {
-            // You must loop this query so pending transfers display properly when you approve of them
             Transfer[] pendingTransfers = tenmoService.getPendingTransfers(currentUser.getUser().getId());
-
-            // Print the pending transfer header even if there are no transfers
             if (pendingTransfers != null) {
-                while (true) {
-                    // Print header
-                    consoleService.printPendingRequestsHeader();
-                    // Display each pending transfer
-                    for (Transfer transfer : pendingTransfers) {
-                        // TODO BUG!!!! Need different formatting for pending transfer!!!
-                        String display = transferDisplayString(transfer);
-                        consoleService.printString(display);
-                    }
+                // Print header
+                consoleService.printPendingRequestsHeader();
+                // Display each pending transfer
+                for (Transfer transfer : pendingTransfers) {
+                    // TODO BUG!!!! Need different formatting for pending transfer!!!
+                    String display = transferDisplayString(transfer);
+                    consoleService.printString(display);
+                }
 
-                    // TODO refactor into separate private helper method???
-                    int pendingRequestTransferId = consoleService.promptForInt("\nPlease enter transfer ID to approve/reject (0 to cancel): ");
-                    if (pendingRequestTransferId == 0) {
-                        loop = false;
+                // TODO refactor into separate private helper method???
+                int pendingRequestTransferId = consoleService.promptForInt("\nPlease enter transfer ID to approve/reject (0 to cancel): ");
+                if (pendingRequestTransferId == 0) {
+                    loop = false;
+                    break;
+                }
+                boolean found = false;
+                for (Transfer transfer : pendingTransfers) {
+                    if (transfer.getTransferId() == pendingRequestTransferId) {
+                        found = true;
+                        handleTransferRequest(transfer);
                         break;
                     }
-                    boolean found = false;
-                    for (Transfer transfer : pendingTransfers) {
-                        if (transfer.getTransferId() == pendingRequestTransferId) {
-                            handleTransferRequest(transfer);
-                            found = true;
-                            // open another menu here
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        consoleService.transferNotFoundMessage();
-                    }
+                }
+                if (!found) {
+                    consoleService.transferNotFoundMessage();
                 }
             } else {
                 consoleService.printString("\nThere are no pending transfers!");
@@ -225,9 +223,8 @@ public class App {
         // validate this update
         // the only validation should be the current users balance...
         // We want to make sure that this transfer array is valid
-
-
-        while (true) {
+        boolean loop = true;
+        while (loop) {
             consoleService.printApprovalHeader();
             int input = consoleService.promptForInt("Please choose an option: ");
 
@@ -241,11 +238,13 @@ public class App {
                         tenmoService.approveRequest(transfer);
 
                     } else {
-                        consoleService.printString("Insufficient funds in your balance");
+                        consoleService.printString("\nInsufficient funds in your balance");
                     }
+                    loop = false;
                     break;
                 case 2:
                     tenmoService.rejectRequest(transfer);
+                    loop = false;
                     break;
                 default:
                     consoleService.printString("\nInvalid choice");
@@ -304,7 +303,7 @@ public class App {
             //set the toId in the transferObject
             transfer.setToUserId(toId);
             transferSuccessful = tenmoService.sendMoney(transfer);
-        }else {
+        } else {
             consoleService.printString("Invalid Id selection");
         }
 
@@ -332,13 +331,13 @@ public class App {
 
 
         boolean isValid = false;
-        for(User user : users){
-            if(user.getId() == toId){
+        for (User user : users) {
+            if (user.getId() == toId) {
                 isValid = true;
                 break;
             }
         }
-        if(isValid && currentUser.getUser().getId() != toId){
+        if (isValid && currentUser.getUser().getId() != toId) {
             //set the toId in the transferObject
             transfer.setFromUserId(currentUser.getUser().getId());
             transfer.setToUserId(toId);                             // In this instance, the toId is used as the person the request is being sent to
@@ -348,9 +347,8 @@ public class App {
             Transfer successTransfer = tenmoService.requestMoney(transfer);
             if (successTransfer == null) {
                 System.out.println("We're sorry. An error occurred during the transfer process. Returning to menu.");
-            }
-            else System.out.println("Request sent successfully. Returning to menu");
-        }else {
+            } else System.out.println("Request sent successfully. Returning to menu");
+        } else {
             consoleService.printString("Invalid Id");
         }
 
