@@ -4,17 +4,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Transfer {
     private int transferId;
+    private int transferTypeId;
+    private int transferStatusId;
     private String transferType;
     private String transferStatus;
     private int accountFromId;
     private int accountToId;
-    @JsonProperty("from_user_id")
-    private int fromUserId;
-    @JsonProperty("to_user_id")
-    private int toUserId;
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
+    private long fromUserId;
+    private long toUserId;
+
+    public int getTransferTypeId() {
+        return transferTypeId;
+    }
+
+    public void setTransferTypeId(int transferTypeId) {
+        this.transferTypeId = transferTypeId;
+    }
+
+    public int getTransferStatusId() {
+        return transferStatusId;
+    }
+
+    public void setTransferStatusId(int transferStatusId) {
+        this.transferStatusId = transferStatusId;
+    }
 
     public int getTransferId() {
         return transferId;
@@ -56,7 +72,7 @@ public class Transfer {
         this.accountToId = accountToId;
     }
 
-    public int getFromUserId() {
+    public long getFromUserId() {
         return fromUserId;
     }
 
@@ -64,7 +80,7 @@ public class Transfer {
         this.fromUserId = fromUserId;
     }
 
-    public int getToUserId() {
+    public long getToUserId() {
         return toUserId;
     }
 

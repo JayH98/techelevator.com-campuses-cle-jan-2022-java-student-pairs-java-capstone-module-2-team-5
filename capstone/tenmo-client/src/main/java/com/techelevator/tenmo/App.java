@@ -183,7 +183,7 @@ public class App {
     }
 
     private void sendBucks() {
-        // TODO have tenmoService call with transfer( fromAccountId, toAccountId, amount)
+        // TODO have tenmoService call with transfer( fromUserId, toUserId, amount)
         /*todo have transfer() return a boolean on success or failure and send
         boolean to consoleService to print message
          */
@@ -209,6 +209,7 @@ public class App {
             consoleService.printString("This amount is not valid.");
             return;
         }
+        transfer.setAmount(moneyToTransfer);
         // get the current userId from currentUser
         // set the requested Id in the transferObject
         transfer.setFromUserId(currentUser.getUser().getId());
@@ -221,18 +222,61 @@ public class App {
                 break;
             }
         }
+        boolean transferSuccessful = false;
         // make checks id cannot be the same
         if(isValid && currentUser.getUser().getId() != toId){
             //set the toId in the transferObject
             transfer.setToUserId(toId);
-            tenmoService.sendMoney(transfer);
+            transferSuccessful = tenmoService.sendMoney(transfer);
         }else {
-            consoleService.printString("Invalid Id");
+            consoleService.printString("Invalid Id selection");
+        }
+
+        if (!transferSuccessful) {
+            System.out.println("We're sorry. An error occurred during the process. Returning to menu.");
         }
     }
 
     private void requestBucks() {
         // TODO Auto-generated method stub
+        Transfer transfer = new Transfer();
+
+        consoleService.printUsersHeader();
+        User[] users = tenmoService.listAllUsers();
+        displayUsers(users);
+
+        int toId = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
+
+        double moneyToRequest = consoleService.promptForDouble("Enter amount: ");
+
+        if (moneyToRequest <= 0) {
+            System.out.println("Error. Invalid cash amount");
+            return;
+        }
+
+
+        boolean isValid = false;
+        for(User user : users){
+            if(user.getId() == toId){
+                isValid = true;
+                break;
+            }
+        }
+        if(isValid && currentUser.getUser().getId() != toId){
+            //set the toId in the transferObject
+            transfer.setFromUserId(currentUser.getUser().getId());
+            transfer.setToUserId(toId);                             // In this instance, the toId is used as the person the request is being sent to
+            transfer.setTransferTypeId(1);
+            transfer.setTransferStatusId(1);
+            transfer.setAmount(moneyToRequest);
+            Transfer successTransfer = tenmoService.requestMoney(transfer);
+            if (successTransfer == null) {
+                System.out.println("We're sorry. An error occurred during the transfer process. Returning to menu.");
+            }
+            else System.out.println("Request sent successfully. Returning to menu");
+        }else {
+            consoleService.printString("Invalid Id");
+        }
 
     }
 
