@@ -239,6 +239,7 @@ public class App {
                     // Check current users balance
                     if (checkBalance(transfer.getAmount())) {
                         tenmoService.approveRequest(transfer);
+
                     } else {
                         consoleService.printString("Insufficient funds in your balance");
                     }
