@@ -76,11 +76,28 @@ public class TenmoService {
         return pendingTransfers;
     }
 
-    public void approveRequest(Transfer transfer) {
-
+    public boolean approveRequest(Transfer transfer) {
+        boolean success = false;
+        try {
+            restTemplate.put(baseUrl + "transfers/requests/accepted", makeTransferEntity(transfer));
+            success = true;
+        }
+        catch (ResourceAccessException | RestClientResponseException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
     }
 
-    public void rejectRequest(Transfer transfer) {
+    public boolean rejectRequest(Transfer transfer) {
+        boolean success = false;
+        try {
+            restTemplate.put(baseUrl + "transfers/requests/rejected", makeTransferEntity(transfer));
+            success = true;
+        }
+        catch (ResourceAccessException | RestClientResponseException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
     }
 
     public boolean sendMoney(Transfer transfer) {
