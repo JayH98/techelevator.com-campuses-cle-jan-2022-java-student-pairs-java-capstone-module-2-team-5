@@ -62,6 +62,44 @@ public class TenmoService {
         return transfers;
     }
 
+    public Transfer[] getPendingTransfers(long userId) {
+        Transfer[] pendingTransfers = null;
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId + "/requests",
+                    HttpMethod.GET,
+                    makeAuthEntity(),
+                    Transfer[].class);
+            pendingTransfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return pendingTransfers;
+    }
+
+    public boolean approveRequest(Transfer transfer) {
+        boolean success = false;
+        try {
+            restTemplate.put(baseUrl + "transfers/requests/accepted", makeTransferEntity(transfer));
+            success = true;
+        }
+        catch (ResourceAccessException | RestClientResponseException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
+    }
+
+    public boolean rejectRequest(Transfer transfer) {
+        boolean success = false;
+        try {
+            restTemplate.put(baseUrl + "transfers/requests/rejected", makeTransferEntity(transfer));
+            success = true;
+        }
+        catch (ResourceAccessException | RestClientResponseException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
+    }
+
     public boolean sendMoney(Transfer transfer) {
         boolean success = false;
         try {
@@ -82,7 +120,6 @@ public class TenmoService {
         }
         return returnedTransfer;
     }
-
 
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
