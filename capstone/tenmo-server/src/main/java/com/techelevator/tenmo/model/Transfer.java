@@ -8,10 +8,8 @@ public class Transfer {
     private String transferStatus;
     private int accountFromId;
     private int accountToId;
-    @JsonProperty("from_user_id")
-    private int fromUserId;
-    @JsonProperty("to_user_id")
-    private int toUserId;
+    private long fromUserId;
+    private long toUserId;
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
@@ -56,7 +54,7 @@ public class Transfer {
         this.accountToId = accountToId;
     }
 
-    public int getFromUserId() {
+    public long getFromUserId() {
         return fromUserId;
     }
 
@@ -64,7 +62,7 @@ public class Transfer {
         this.fromUserId = fromUserId;
     }
 
-    public int getToUserId() {
+    public long getToUserId() {
         return toUserId;
     }
 

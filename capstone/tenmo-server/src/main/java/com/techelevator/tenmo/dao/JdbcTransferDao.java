@@ -24,9 +24,11 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public void transferMoney(int fromUser, int toUser, double amountToTransfer){
+    public void transferMoney(long fromUser, long toUser, double amountToTransfer){
         checkUserExists(fromUser);
         checkUserExists(toUser);
+
+        Transfer transfer = new Transfer();
 
         String sql = "UPDATE account SET balance = balance - ? " +
                 "WHERE user_id = ? Returning account_id;";
@@ -67,6 +69,7 @@ public class JdbcTransferDao implements TransferDao {
             throw new TransferNotFoundException("Error. No such transfer exists or you do not have permission to view it.");
     }
 
+
     private void createTransfer(int fromUserAccountId, int toUserAccountId, double transferAmount) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES (?, ?, ?, ?, ?);";
@@ -75,7 +78,7 @@ public class JdbcTransferDao implements TransferDao {
                 TransferStatus.APPROVED, fromUserAccountId, toUserAccountId, transferAmount);
     }
 
-    private void checkUserExists(int userId) {
+    private void checkUserExists(long userId) {
         String sql = "SELECT user_id, username FROM tenmo_user WHERE user_id = ?;";
 
         SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
