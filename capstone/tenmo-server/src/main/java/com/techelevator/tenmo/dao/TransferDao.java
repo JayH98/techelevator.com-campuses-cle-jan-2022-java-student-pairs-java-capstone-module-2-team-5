@@ -7,11 +7,17 @@ import java.util.List;
 
 public interface TransferDao {
 
-    public void transferMoney(long fromUsername, long toUsername, double amountToTransfer);
+    public void transferMoney(Transfer transfer);
 
     public List<Transfer> viewTransfers(int userId) throws TransferNotFoundException;
 
-    public Transfer requestMoney(long fromUsername, long toUsername, double amountToTransfer);
+    public Transfer createTransfer(Transfer transfer);
+
+    public int findAccount(long id);
+
+
+// TODO implement method to update pending requests to either rejected or accepted
+//    public Transfer updateTransfer(Transfer transfer);
 
 
 }

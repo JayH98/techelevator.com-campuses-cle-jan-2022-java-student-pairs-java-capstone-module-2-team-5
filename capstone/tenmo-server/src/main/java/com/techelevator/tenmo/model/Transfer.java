@@ -6,6 +6,8 @@ public class Transfer {
     private int transferId;
     private String transferType;
     private String transferStatus;
+    private int transferTypeId;
+    private int TransferStatusId;
     private int accountFromId;
     private int accountToId;
     private long fromUserId;
@@ -13,6 +15,22 @@ public class Transfer {
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
+
+    public int getTransferTypeId() {
+        return transferTypeId;
+    }
+
+    public void setTransferTypeId(int transferTypeId) {
+        this.transferTypeId = transferTypeId;
+    }
+
+    public int getTransferStatusId() {
+        return TransferStatusId;
+    }
+
+    public void setTransferStatusId(int transferStatusId) {
+        TransferStatusId = transferStatusId;
+    }
 
     public int getTransferId() {
         return transferId;

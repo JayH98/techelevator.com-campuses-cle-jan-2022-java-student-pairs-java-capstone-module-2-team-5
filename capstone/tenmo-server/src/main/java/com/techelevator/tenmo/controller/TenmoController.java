@@ -46,13 +46,15 @@ public class TenmoController {
     // Todo make validations for transfer model
     @RequestMapping(path = "transfers", method = RequestMethod.PUT)
     public void transfer(/*@Valid*/ @RequestBody Transfer transfer) {
-        transferDao.transferMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
+        transferDao.transferMoney(transfer);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
-    @RequestMapping(path = "transfers", method = RequestMethod.POST)
+    @RequestMapping(path = "transfers/requests", method = RequestMethod.POST)
     public Transfer requestMoney(/*@Valid*/ @RequestBody Transfer transfer) {
-        return transferDao.requestMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
+        transfer.setAccountFromId(transferDao.findAccount(transfer.getFromUserId()));           // finds requesters account_id
+        transfer.setAccountToId(transferDao.findAccount(transfer.getToUserId()));
+        return transferDao.createTransfer(transfer);                                            // finds requestees account_id
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)

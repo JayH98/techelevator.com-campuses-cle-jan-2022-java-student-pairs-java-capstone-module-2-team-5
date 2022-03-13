@@ -233,7 +233,7 @@ public class App {
         }
 
         if (!transferSuccessful) {
-            System.out.println("Something went wrong in the transferring process. Please try again");
+            System.out.println("We're sorry. An error occurred during the process. Returning to menu.");
         }
     }
 
@@ -266,7 +266,12 @@ public class App {
             //set the toId in the transferObject
             transfer.setFromUserId(currentUser.getUser().getId());
             transfer.setToUserId(toId);                             // In this instance, the toId is used as the person the request is being sent to
-            tenmoService.requestMoney(transfer);
+            transfer.setTransferTypeId(1);
+            transfer.setTransferStatusId(1);
+            Transfer successTransfer = tenmoService.requestMoney(transfer);
+            if (successTransfer == null) {
+                System.out.println("We're sorry. An error occurred during the transfer process. Returning to menu.");
+            }
         }else {
             consoleService.printString("Invalid Id");
         }

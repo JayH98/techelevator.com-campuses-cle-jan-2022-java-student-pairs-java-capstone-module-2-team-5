@@ -2,10 +2,7 @@ package com.techelevator.tenmo.dao;
 
 
 import com.techelevator.tenmo.exceptions.TransferNotFoundException;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.TransferStatus;
-import com.techelevator.tenmo.model.TransferType;
-import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,21 +21,22 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public void transferMoney(long fromUser, long toUser, double amountToTransfer){
-        checkUserExists(fromUser);
-        checkUserExists(toUser);
-
-        Transfer transfer = new Transfer();
+    public void transferMoney(Transfer transfer){
+        checkUserExists(transfer.getFromUserId());
+        checkUserExists(transfer.getToUserId());
 
         String sql = "UPDATE account SET balance = balance - ? " +
                 "WHERE user_id = ? Returning account_id;";
-        int fromUserAccountId = jdbcTemplate.queryForObject(sql, Integer.class, amountToTransfer, fromUser);
+        transfer.setAccountFromId(jdbcTemplate.queryForObject(sql, Integer.class, transfer.getAmount(), transfer.getFromUserId()));
 
         sql = "UPDATE account SET balance = balance + ? " +
                 "WHERE user_id = ? Returning account_id;";
-        int toUserAccountId = jdbcTemplate.queryForObject(sql, Integer.class, amountToTransfer, toUser);
+        transfer.setAccountToId(jdbcTemplate.queryForObject(sql, Integer.class, transfer.getAmount(), transfer.getToUserId()));
 
-        createTransfer(fromUserAccountId, toUserAccountId, amountToTransfer);
+        transfer.setTransferTypeId(TransferType.SEND);
+        transfer.setTransferStatusId(TransferStatus.APPROVED);
+
+        createTransfer(transfer);
     }
 
     @Override
@@ -70,12 +68,27 @@ public class JdbcTransferDao implements TransferDao {
     }
 
 
-    private void createTransfer(int fromUserAccountId, int toUserAccountId, double transferAmount) {
+    public Transfer createTransfer(Transfer transfer) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                "VALUES (?, ?, ?, ?, ?);";
+                "VALUES (?, ?, ?, ?, ?); returning transfer_id";
 
-        jdbcTemplate.update(sql, TransferType.SEND,
-                TransferStatus.APPROVED, fromUserAccountId, toUserAccountId, transferAmount);
+        transfer.setTransferId(jdbcTemplate.queryForObject(sql, Integer.class, transfer.getTransferTypeId(),
+                transfer.getTransferStatusId(), transfer.getAccountFromId(), transfer.getAccountToId(), transfer.getAmount()));
+        return transfer;
+    }
+
+
+    public int findAccount(long id) {
+        Account account = new Account();
+        String sql = "SELECT account_id" +
+                "FROM account" +
+                "WHERE user_id = ?;";
+
+        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, id);
+        account.setAccountId(rowset.getInt("account_id"));
+
+        return account.getAccountId();
+
     }
 
     private void checkUserExists(long userId) {
