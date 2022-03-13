@@ -174,7 +174,47 @@ public class App {
 
 
     private void viewPendingRequests() {
-        // TODO Auto-generated method stub
+        // Loop: get pending transfers
+        // re-query after to make sure it is removed from the list
+        boolean loop = true;
+        while (loop) {
+            // You must loop this query so pending transfers display properly when you approve of them
+            Transfer[] pendingTransfers = tenmoService.getPendingTransfers(currentUser.getUser().getId());
+
+            // Print the transfer history header even if there are no transfers
+            if (pendingTransfers != null) {
+                while (true) {
+                    // Print header
+                    consoleService.printPendingRequestsHeader();
+                    // Display each pending transfer
+                    for (Transfer transfer : pendingTransfers) {
+                        String display = transferDisplayString(transfer);
+                        consoleService.printString(display);
+                    }
+
+                    // TODO refactor into separate private helper method???
+                    int transferId = consoleService.promptForInt("\nPlease enter transfer ID to approve/reject (0 to cancel): ");
+                    if (transferId == 0) {
+                        loop = false;
+                        break;
+                    }
+                    boolean found = false;
+                    for (Transfer transfer : pendingTransfers) {
+                        if (transfer.getTransferId() == transferId) {
+                            consoleService.printTransferHeader();
+                            consoleService.printString(transfer.toString());
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        consoleService.transferNotFoundMessage();
+                    }
+                }
+            } else {
+                consoleService.printString("\nThere are no pending transfers!");
+                loop = false;
+            }
+        }
     }
 
     private void sendBucks() {
