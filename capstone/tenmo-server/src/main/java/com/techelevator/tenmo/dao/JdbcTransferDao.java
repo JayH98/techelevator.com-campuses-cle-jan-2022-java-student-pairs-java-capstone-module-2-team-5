@@ -160,6 +160,7 @@ public class JdbcTransferDao implements TransferDao {
         return rowset;
     }
 
+    @Override
     public void acceptRequest(Transfer transfer){
         setTransferStatusToApproved(transfer);
         subtractAmountFromSender(transfer);
