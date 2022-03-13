@@ -26,12 +26,12 @@ public class JdbcTransferDao implements TransferDao {
         checkUserExists(transfer.getToUserId());
 
         String sql = "UPDATE account SET balance = balance - ? " +
-                "WHERE user_id = ? Returning account_id;";
-        transfer.setAccountFromId(jdbcTemplate.queryForObject(sql, Integer.class, transfer.getAmount(), transfer.getFromUserId()));
+                "WHERE user_id = ?;";
+        transfer.setAccountFromId(findAccountByUserId(transfer.getFromUserId()));
 
         sql = "UPDATE account SET balance = balance + ? " +
-                "WHERE user_id = ? Returning account_id;";
-        transfer.setAccountToId(jdbcTemplate.queryForObject(sql, Integer.class, transfer.getAmount(), transfer.getToUserId()));
+                "WHERE user_id = ?;";
+        transfer.setAccountToId(findAccountByUserId(transfer.getAccountToId()));
 
         transfer.setTransferTypeId(TransferType.SEND);
         transfer.setTransferStatusId(TransferStatus.APPROVED);
@@ -69,6 +69,8 @@ public class JdbcTransferDao implements TransferDao {
 
 
     public Transfer createTransfer(Transfer transfer) {
+        transfer.setAccountFromId(findAccountByUserId(transfer.getFromUserId()));
+        transfer.setAccountToId(findAccountByUserId(transfer.getToUserId()));
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES (?, ?, ?, ?, ?); returning transfer_id";
 
@@ -78,7 +80,7 @@ public class JdbcTransferDao implements TransferDao {
     }
 
 
-    public int findAccount(long id) {
+    public int findAccountByUserId(long id) {
         Account account = new Account();
         String sql = "SELECT account_id" +
                 "FROM account" +

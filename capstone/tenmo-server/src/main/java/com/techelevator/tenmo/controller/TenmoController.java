@@ -52,9 +52,9 @@ public class TenmoController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @RequestMapping(path = "transfers/requests", method = RequestMethod.POST)
     public Transfer requestMoney(/*@Valid*/ @RequestBody Transfer transfer) {
-        transfer.setAccountFromId(transferDao.findAccount(transfer.getFromUserId()));           // finds requesters account_id
-        transfer.setAccountToId(transferDao.findAccount(transfer.getToUserId()));
-        return transferDao.createTransfer(transfer);                                            // finds requestees account_id
+        transfer.setAccountFromId(transferDao.findAccountForTransfer(transfer.getFromUserId()));           // finds requesters account_id
+        transfer.setAccountToId(transferDao.findAccountForTransfer(transfer.getToUserId()));              // finds requestees account_id
+        return transferDao.createTransfer(transfer);
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
