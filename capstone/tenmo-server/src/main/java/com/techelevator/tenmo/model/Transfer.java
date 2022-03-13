@@ -1,7 +1,5 @@
 package com.techelevator.tenmo.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Transfer {
     private int transferId;
     private int transferTypeId;
