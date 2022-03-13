@@ -111,8 +111,7 @@ public class ConsoleService {
         System.out.println("1: Approve\n" +
                 "2: Reject\n" +
                 "0: Don't approve or reject\n" +
-                "------------------------------------------\n" +
-                "Please choose an option: ");
+                "------------------------------------------\n");
     }
 
     public void printPendingRequestsHeader() {
