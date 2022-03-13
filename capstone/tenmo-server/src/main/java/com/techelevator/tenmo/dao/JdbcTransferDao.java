@@ -68,7 +68,7 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public List<Transfer> viewPendingTransfers(int userId) throws TransferNotFoundException {
+    public List<Transfer> viewPendingTransferRequests(int userId) throws TransferNotFoundException {
         List<Transfer> pendingTransfers = new ArrayList<>();
         boolean gotRowSet = false;
 

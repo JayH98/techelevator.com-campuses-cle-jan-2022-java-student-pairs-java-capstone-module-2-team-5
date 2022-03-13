@@ -181,29 +181,31 @@ public class App {
             // You must loop this query so pending transfers display properly when you approve of them
             Transfer[] pendingTransfers = tenmoService.getPendingTransfers(currentUser.getUser().getId());
 
-            // Print the transfer history header even if there are no transfers
+            // Print the pending transfer header even if there are no transfers
             if (pendingTransfers != null) {
                 while (true) {
                     // Print header
                     consoleService.printPendingRequestsHeader();
                     // Display each pending transfer
                     for (Transfer transfer : pendingTransfers) {
+                        // TODO BUG!!!! Need different formatting for pending transfer!!!
                         String display = transferDisplayString(transfer);
                         consoleService.printString(display);
                     }
 
                     // TODO refactor into separate private helper method???
-                    int transferId = consoleService.promptForInt("\nPlease enter transfer ID to approve/reject (0 to cancel): ");
-                    if (transferId == 0) {
+                    int pendingRequestTransferId = consoleService.promptForInt("\nPlease enter transfer ID to approve/reject (0 to cancel): ");
+                    if (pendingRequestTransferId == 0) {
                         loop = false;
                         break;
                     }
                     boolean found = false;
                     for (Transfer transfer : pendingTransfers) {
-                        if (transfer.getTransferId() == transferId) {
-                            consoleService.printTransferHeader();
-                            consoleService.printString(transfer.toString());
+                        if (transfer.getTransferId() == pendingRequestTransferId) {
+                            handleTransferRequest(transfer);
                             found = true;
+                            // open another menu here
+                            break;
                         }
                     }
                     if (!found) {
@@ -215,6 +217,44 @@ public class App {
                 loop = false;
             }
         }
+    }
+
+    private void handleTransferRequest(Transfer transfer) {
+        // TODO update database and approve of transfer
+        // tenmoService call to update database
+        // validate this update
+        // the only validation should be the current users balance...
+        // We want to make sure that this transfer array is valid
+
+
+        while (true) {
+            consoleService.printApprovalHeader();
+            int input = consoleService.promptForInt("Please choose an option: ");
+
+            if (input == 0)
+                break;
+
+            switch (input) {
+                case 1:
+                    // Check current users balance
+                    if (checkBalance(transfer.getAmount())) {
+                        // tenmoService.approveRequest(transfer)
+                    } else {
+                        consoleService.printString("Insufficient funds in your balance");
+                    }
+                    break;
+                case 2:
+                    // tenmoService.rejectRequest(transfer)
+                    break;
+                default:
+                    consoleService.printString("\nInvalid choice");
+            }
+        }
+    }
+
+    private boolean checkBalance(double amount) {
+        double currentBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
+        return currentBalance >= amount;
     }
 
     private void sendBucks() {

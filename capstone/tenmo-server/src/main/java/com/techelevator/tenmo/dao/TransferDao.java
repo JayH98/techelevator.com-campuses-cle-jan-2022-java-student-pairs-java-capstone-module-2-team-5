@@ -11,7 +11,7 @@ public interface TransferDao {
 
     public List<Transfer> viewTransfers(int userId) throws TransferNotFoundException;
 
-    public List<Transfer> viewPendingTransfers(int userId) throws TransferNotFoundException;
+    public List<Transfer> viewPendingTransferRequests(int userId) throws TransferNotFoundException;
 
     public Transfer createTransfer(Transfer transfer);
 

@@ -65,7 +65,7 @@ public class TenmoService {
     public Transfer[] getPendingTransfers(long userId) {
         Transfer[] pendingTransfers = null;
         try {
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId + "/pending",
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId + "/requests",
                     HttpMethod.GET,
                     makeAuthEntity(),
                     Transfer[].class);
