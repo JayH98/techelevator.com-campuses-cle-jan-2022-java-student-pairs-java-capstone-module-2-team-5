@@ -66,6 +66,7 @@ public class TenmoController {
     @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)
     public List<Transfer> viewPendingTransferRequests(@PathVariable int id) throws TransferNotFoundException {
         // Alternate implementation could get all transfers by id and then use Java logic to filter list
+        // Iterate over list of all transfers
         // filter : transferType.equals("Pending");
         return transferDao.viewPendingTransfers(id);
     }
