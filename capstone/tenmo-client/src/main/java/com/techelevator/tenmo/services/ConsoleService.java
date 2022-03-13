@@ -107,6 +107,21 @@ public class ConsoleService {
                 "--------------------------------------------");
     }
 
+    public void printApprovalHeader() {
+        System.out.println("1: Approve\n" +
+                "2: Reject\n" +
+                "0: Don't approve or reject\n" +
+                "------------------------------------------\n" +
+                "Please choose an option: ");
+    }
+
+    public void printPendingRequestsHeader() {
+        System.out.println("-------------------------------------------\n" +
+                "Pending Transfers\n" +
+                "ID          To                 Amount\n" +
+                "-------------------------------------------");
+    }
+
 
     public void printString(String string) {
         System.out.println(string);

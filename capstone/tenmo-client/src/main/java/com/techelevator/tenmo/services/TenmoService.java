@@ -65,7 +65,7 @@ public class TenmoService {
     public boolean sendMoney(Transfer transfer) {
         boolean success = false;
         try {
-            restTemplate.put(baseUrl + "transfers", makeTransferEntity(transfer), Transfer.class);
+            restTemplate.put(baseUrl + "transfers", makeTransferEntity(transfer));
             success = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -73,6 +73,15 @@ public class TenmoService {
         return success;
     }
 
+    public Transfer requestMoney(Transfer transfer) {
+        Transfer returnedTransfer = null;
+        try {
+            returnedTransfer = restTemplate.postForObject(baseUrl + "transfers/requests", makeTransferEntity(transfer), Transfer.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return returnedTransfer;
+    }
 
 
 

@@ -32,7 +32,7 @@ public class Transfer {
         return toUserId;
     }
 
-    public void setToUserId(long toUserId) {
+    public void setToUserId(int toUserId) {
         this.toUserId = toUserId;
     }
 

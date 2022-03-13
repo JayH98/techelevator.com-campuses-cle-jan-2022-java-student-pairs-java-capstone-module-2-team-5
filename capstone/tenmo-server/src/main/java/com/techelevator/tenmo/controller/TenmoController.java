@@ -6,6 +6,7 @@ import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +46,13 @@ public class TenmoController {
     // Todo make validations for transfer model
     @RequestMapping(path = "transfers", method = RequestMethod.PUT)
     public void transfer(/*@Valid*/ @RequestBody Transfer transfer) {
-        transferDao.transferMoney(transfer.getFromUserId(), transfer.getToUserId(), transfer.getAmount());
+        transferDao.transferMoney(transfer);
+    }
+
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @RequestMapping(path = "transfers/requests", method = RequestMethod.POST)
+    public Transfer requestMoney(/*@Valid*/ @RequestBody Transfer transfer) {
+        return transferDao.createTransfer(transfer);
     }
 
     @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
