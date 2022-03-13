@@ -176,15 +176,29 @@ public class App {
 
     private void viewPendingRequests() {
         // TODO Auto-generated method stub
+        boolean isValid = false;
         consoleService.printPendingRequestsHeader();
         // TODO get list of pending requests for user, needs to be based on account_to in transfer table
 
         System.out.println("Please enter transfer ID to approve/reject (0 to cancel): ");
         int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
 
-        // TODO select transfer user picks from list of pending transfers
+//        for (Transfer transfer : pendingTransfers) {
+//            if (transferToManage = transfer.getTransferId()) {
+//                isValid = true;
+//            }
 
+//         }
+        // TODO select transfer user picks from list of pending transfers
         consoleService.printApprovalHeader();
+        int approval = consoleService.promptForInt("Please choose an option: ");
+        switch (approval) {
+            case 1: // TODO call tenmo service here;
+            case 2: // TODO call tenmo service here;
+            case 0:
+                System.out.println("Canceling approval. Returning to menu.");
+                return;
+        }
 
 
     }
