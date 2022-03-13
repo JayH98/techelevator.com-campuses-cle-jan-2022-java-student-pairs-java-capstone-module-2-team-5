@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Transfer {
     private int transferId;
+    private int transferTypeId;
+    private int transferStatusId;
     private String transferType;
     private String transferStatus;
-    private int transferTypeId;
-    private int TransferStatusId;
     private int accountFromId;
     private int accountToId;
-    private long fromUserId;
-    private long toUserId;
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
+    private long fromUserId;
+    private long toUserId;
 
     public int getTransferTypeId() {
         return transferTypeId;
@@ -25,11 +25,11 @@ public class Transfer {
     }
 
     public int getTransferStatusId() {
-        return TransferStatusId;
+        return transferStatusId;
     }
 
     public void setTransferStatusId(int transferStatusId) {
-        TransferStatusId = transferStatusId;
+        this.transferStatusId = transferStatusId;
     }
 
     public int getTransferId() {

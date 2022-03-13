@@ -13,7 +13,6 @@ public interface TransferDao {
 
     public Transfer createTransfer(Transfer transfer);
 
-    public int findAccountByUserId(long id);
 
 
 // TODO implement method to update pending requests to either rejected or accepted

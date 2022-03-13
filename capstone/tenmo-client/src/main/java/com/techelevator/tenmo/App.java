@@ -253,7 +253,7 @@ public class App {
             System.out.println("Error. Invalid cash amount");
             return;
         }
-        transfer.setAmount(moneyToRequest);
+
 
         boolean isValid = false;
         for(User user : users){
@@ -268,6 +268,7 @@ public class App {
             transfer.setToUserId(toId);                             // In this instance, the toId is used as the person the request is being sent to
             transfer.setTransferTypeId(1);
             transfer.setTransferStatusId(1);
+            transfer.setAmount(moneyToRequest);
             Transfer successTransfer = tenmoService.requestMoney(transfer);
             if (successTransfer == null) {
                 System.out.println("We're sorry. An error occurred during the transfer process. Returning to menu.");
