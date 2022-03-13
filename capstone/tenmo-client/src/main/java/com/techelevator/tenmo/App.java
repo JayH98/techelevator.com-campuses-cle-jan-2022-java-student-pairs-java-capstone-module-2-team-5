@@ -238,13 +238,13 @@ public class App {
                 case 1:
                     // Check current users balance
                     if (checkBalance(transfer.getAmount())) {
-                        // tenmoService.approveRequest(transfer)
+                        tenmoService.approveRequest(transfer);
                     } else {
                         consoleService.printString("Insufficient funds in your balance");
                     }
                     break;
                 case 2:
-                    // tenmoService.rejectRequest(transfer)
+                    tenmoService.rejectRequest(transfer);
                     break;
                 default:
                     consoleService.printString("\nInvalid choice");

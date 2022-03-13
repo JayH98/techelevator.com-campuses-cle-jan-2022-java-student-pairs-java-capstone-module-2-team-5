@@ -70,11 +70,17 @@ public class TenmoService {
                     makeAuthEntity(),
                     Transfer[].class);
             pendingTransfers = response.getBody();
-        }
-        catch (RestClientResponseException | ResourceAccessException e) {
+        } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return pendingTransfers;
+    }
+
+    public void approveRequest(Transfer transfer) {
+
+    }
+
+    public void rejectRequest(Transfer transfer) {
     }
 
     public boolean sendMoney(Transfer transfer) {
@@ -97,7 +103,6 @@ public class TenmoService {
         }
         return returnedTransfer;
     }
-
 
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
