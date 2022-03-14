@@ -207,44 +207,41 @@ public class App {
 
         boolean transferSuccessful = true;
         boolean onSendMoneyMenu = true;
-        
+        Transfer transfer = new Transfer();     // make a empty transferObject
+
         consoleService.printUsersHeader();
         User[] users = tenmoService.listAllUsers();
         displayUsers(users);
-        Transfer transfer = new Transfer();             // make a empty transferObject
-
-        int toId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");  //  request an int that is a UserId
-        double moneyToTransfer = consoleService.promptForDouble("Enter amount: ");                  // query the user for the amount of $ to send
-        double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());         // getting the balance
-
-        if (moneyToTransfer <= 0.00) {                   // check the amount is greater than $0.00
-            consoleService.printString("This amount is not valid.");
-            return;
-        }
-
-        if (moneyToTransfer > currentUserBalance) {
-            consoleService.printString("Sorry. You do not have enough money to send $" + moneyToTransfer);      // check the amount cannot be more than the balance
-            return;
-        }
-        transfer.setAmount(moneyToTransfer);
-
-        transfer.setFromUserId(currentUser.getUser().getId());          // get the current userId from currentUser
-
-
-        boolean isValid = false;
-        for (User user : users) {           // make sure toId is valid
-            if (user.getId() == toId) {
-                isValid = true;
-                break;
-            }
-        }
 
         while (onSendMoneyMenu) {
+            int toId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");  //  request an int that is a UserId
+            double moneyToTransfer = consoleService.promptForDouble("Enter amount: ");                  // query the user for the amount of $ to send
+            double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());         // getting the balance
 
-            if (isValid) {           // checks ids are not the same
-                if (currentUser.getUser().getId() != toId) {
-                    //set the toId in the transferObject
-                    transfer.setToUserId(toId);                                         // set the requested Id in the transferObject
+            if (moneyToTransfer == 0) {
+                return;
+            }
+            if (moneyToTransfer < 0.00) {                   // check the amount is greater than $0.00
+                consoleService.printString("This amount is not valid.");
+                continue;
+            }
+            if (moneyToTransfer > currentUserBalance) {
+                consoleService.printString("Sorry. You do not have enough money to send $" + moneyToTransfer);      // check the amount cannot be more than the balance
+                continue;
+            }
+            transfer.setAmount(moneyToTransfer);
+            transfer.setFromUserId(currentUser.getUser().getId());          // get the current userId from currentUser and set it to fromId in transfer object
+
+            boolean isValid = false;
+            for (User user : users) {           // make sure toId is valid
+                if (user.getId() == toId) {
+                    isValid = true;
+                    break;
+                }
+            }
+            if (isValid) {
+                if (currentUser.getUser().getId() != toId) {            // checks ids are not the same
+                    transfer.setToUserId(toId);                                        //set the toId in the transferObject
                     transferSuccessful = tenmoService.sendMoney(transfer);
                     onSendMoneyMenu = false;
                 } else {
@@ -255,9 +252,9 @@ public class App {
             }
         }
         if (!transferSuccessful) {
-            consoleService.printString("We're sorry. An error occurred during the process. Returning to menu.");
+            consoleService.printString("We're sorry. An error occurred during the process. Returning to main menu.");
         } else
-            consoleService.printString("Money sent successfully! Returning to menu");
+            consoleService.printString("Money sent successfully! Returning to main menu");
     }
 
 
@@ -323,9 +320,9 @@ public class App {
         String toName = transfer.getAccountToUsername();
 
         if (currentUserName.equals(fromName)) {
-            display += "TO: " + toName + "\t";
+            display += "TO: " + toName + "\t\t\t";
         } else {
-            display += "FROM: " + fromName + "\t";
+            display += "FROM: " + fromName + "\t\t\t";
         }
 
         double amount = transfer.getAmount();

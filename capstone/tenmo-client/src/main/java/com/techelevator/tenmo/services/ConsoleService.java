@@ -140,7 +140,7 @@ public class ConsoleService {
 
 
     public void transferNotFoundMessage() {
-        System.out.println("\nTransaction not found!!\n");
+        System.out.println("\nTransaction not found!! Either this transaction does not exist, or you do not have permission to view it.\n");
     }
 
     public void printErrorMessage() {
