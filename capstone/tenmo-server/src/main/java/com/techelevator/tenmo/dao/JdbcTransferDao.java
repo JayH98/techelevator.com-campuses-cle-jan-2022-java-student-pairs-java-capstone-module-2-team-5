@@ -25,13 +25,13 @@ public class JdbcTransferDao implements TransferDao {
         checkUserExists(transfer.getFromUserId());
         checkUserExists(transfer.getToUserId());
 
-        String sql = "UPDATE account SET balance = balance - ? " +
+        String sql = "UPDATE account SET balance = (balance - ?) " +
                 "WHERE user_id = ?;";
         jdbcTemplate.update(sql, transfer.getAmount(), transfer.getFromUserId());
 
-        sql = "UPDATE account SET balance = balance + ? " +
+        sql = "UPDATE account SET balance = (balance + ?) " +
                 "WHERE user_id = ?;";
-        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getFromUserId());
+        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getToUserId());
 
         transfer.setTransferTypeId(TransferType.SEND);
         transfer.setTransferStatusId(TransferStatus.APPROVED);

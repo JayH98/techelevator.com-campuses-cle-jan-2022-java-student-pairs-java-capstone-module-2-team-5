@@ -151,27 +151,27 @@ public class App {
         boolean isValid;
         Transfer pendingTransfer = null;
         double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
-
-
         do {
             isValid = false;
             consoleService.printPendingRequestsHeader();
             Transfer[] pendingTransfers = tenmoService.viewPendingTransfers(currentUser.getUser().getId());
-            for (Transfer transfer : pendingTransfers) {
-                System.out.println(transfer.getTransferId() + "\t\t" + transfer.getAccountFromUsername() + "\t\t\t\t" + transfer.getAmount());
-            }
-            int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
 
-
-            for (Transfer transfer : pendingTransfers) {
-                if (transferToManage == transfer.getTransferId()) {
-                    pendingTransfer = transfer;
-                    isValid = true;
-                    break;
+            if (pendingTransfers != null) {
+                for (Transfer transfer : pendingTransfers) {
+                    System.out.println(transfer.getTransferId() + "\t\t" + transfer.getAccountFromUsername() + "\t\t\t\t" + transfer.getAmount());
                 }
-             }
-            if (pendingTransfer == null) {
-                System.out.println("Error. Invalid transfer selection. Please try again.");
+                int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
+                if (transferToManage == 0) { return; }
+                for (Transfer transfer : pendingTransfers) {
+                    if (transferToManage == transfer.getTransferId()) {
+                        pendingTransfer = transfer;
+                        isValid = true;
+                        break;
+                    }
+                 } if (pendingTransfer == null) {consoleService.printString("\nInvalid transfer selection. Please try again.\n");}
+            } else {
+                consoleService.printString("\nYou do not have any pending transfers.\n");
+                return;
             }
         } while (!isValid);
 
