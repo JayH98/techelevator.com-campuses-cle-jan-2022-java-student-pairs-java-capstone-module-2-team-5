@@ -72,12 +72,22 @@ public class JdbcTransferDao implements TransferDao {
         List<Transfer> pendingTransfers = new ArrayList<>();
         boolean gotRowSet = false;
 
-        String sql = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount " +
+//        String sql = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount " +      // Original SQL statement.
+//                "FROM transfer " +                                                                                            // Would obtain all transfers that were pending where user
+//                "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +                         // was involved, not just where user was account_to
+//                "JOIN transfer_status ON transfer.transfer_status_id = transfer_status.transfer_status_id " +
+//                "JOIN account ON transfer.account_from = account.account_id OR transfer.account_to = account.account_id " +
+//                "WHERE user_id = ? AND transfer.transfer_status_id = ?;";
+
+       String sql = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount " +
                 "FROM transfer " +
                 "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +
                 "JOIN transfer_status ON transfer.transfer_status_id = transfer_status.transfer_status_id " +
                 "JOIN account ON transfer.account_from = account.account_id OR transfer.account_to = account.account_id " +
-                "WHERE user_id = ? AND transfer.transfer_status_id = ?;";
+                "WHERE account.user_id = ? AND transfer.transfer_status_id = ? " +
+                "AND account_to = account_id;";
+
+
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, userId, TransferStatus.PENDING);
         while (rowSet.next()) {
@@ -88,7 +98,7 @@ public class JdbcTransferDao implements TransferDao {
             // Client side needs username as a string, and not the user_id or transfer id as numbers
             Transfer transfer = mapTransferToRowset(rowSet);
             transfer.setAccountFromUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
-            transfer.setAccountToUsername(getUserRowset(transfer.getAccountFromId()).getString("username"));
+            transfer.setAccountToUsername(getUserRowset(transfer.getAccountToId()).getString("username"));
 
             pendingTransfers.add(transfer);
         }
@@ -109,6 +119,26 @@ public class JdbcTransferDao implements TransferDao {
                 transfer.getTransferStatusId(), transfer.getAccountFromId(), transfer.getAccountToId(), transfer.getAmount()));
         return transfer;
     }
+
+    public void updateTransfer(Transfer transfer) {
+        String sql = "UPDATE transfer " +
+                "SET transfer_status_id = ? " +
+                "WHERE transfer_id = ?;";
+        jdbcTemplate.update(sql, transfer.getTransferStatusId(), transfer.getTransferId());
+    }
+
+    public void updateBalance(Transfer transfer) {
+        String sql = "Update account " +
+                "SET balance = balance - ? " +
+                "WHERE account_id = ?;";
+        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccountToId());
+
+        sql = "Update account " +
+                "SET balance = balance + ?" +
+                "WHERE account_id = ?;";
+        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getAccountFromId());
+    }
+
 
 
     private int findAccountByUserId(long id) {

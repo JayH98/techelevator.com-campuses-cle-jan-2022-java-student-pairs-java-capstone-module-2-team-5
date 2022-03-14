@@ -144,61 +144,60 @@ public class App {
         }
     }
 
-    private String transferDisplayString(Transfer transfer) {
-        // Create empty display string
-        String display = "";
 
-        // Add id to string
-        display += transfer.getTransferId() + "\t";
 
-        String currentUserName = currentUser.getUser().getUsername();
-        String fromName = transfer.getAccountFromUsername();
-        String toName = transfer.getAccountToUsername();
 
-        if (currentUserName.equals(fromName)) {
-            display += "TO: " + toName + "\t";
-        } else {
-            display += "FROM: " + fromName + "\t";
-        }
-
-        double amount = transfer.getAmount();
-        display += NumberFormat.getCurrencyInstance().format(amount);
-
-        return display;
-    }
-
-    private void displayUsers(User[] users) {
-        for (User user : users) {
-            consoleService.printString(user.toString());
-        }
-    }
 
 
     private void viewPendingRequests() {
         // TODO Auto-generated method stub
-        boolean isValid = false;
-        consoleService.printPendingRequestsHeader();
-        // TODO get list of pending requests for user, needs to be based on account_to in transfer table
+        boolean isValid;
+        Transfer pendingTransfer = null;
+        double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
 
-        System.out.println("Please enter transfer ID to approve/reject (0 to cancel): ");
-        int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
 
-//        for (Transfer transfer : pendingTransfers) {
-//            if (transferToManage = transfer.getTransferId()) {
-//                isValid = true;
-//            }
+        do {
+            isValid = false;
+            consoleService.printPendingRequestsHeader();
+            Transfer[] pendingTransfers = tenmoService.viewPendingTransfers(currentUser.getUser().getId());
+            for (Transfer transfer : pendingTransfers) {
+                System.out.println(transfer.getTransferId() + "\t\t" + transfer.getAccountFromUsername() + "\t\t\t\t" + transfer.getAmount());
+            }
+            int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
 
-//         }
-        // TODO select transfer user picks from list of pending transfers
+
+            for (Transfer transfer : pendingTransfers) {
+                if (transferToManage == transfer.getTransferId()) {
+                    pendingTransfer = transfer;
+                    isValid = true;
+                    break;
+                }
+             }
+            if (pendingTransfer == null) {
+                System.out.println("Error. Invalid transfer selection. Please try again.");
+            }
+        } while (!isValid);
+
+
         consoleService.printApprovalHeader();
-        int approval = consoleService.promptForInt("Please choose an option: ");
-        switch (approval) {
-            case 1: // TODO call tenmo service here;
-            case 2: // TODO call tenmo service here;
-            case 0:
-                System.out.println("Canceling approval. Returning to menu.");
-                return;
-        }
+            int approval = consoleService.promptForInt("Please choose an option: ");
+            switch (approval) {
+                case 0: System.out.println("Canceling approval. Returning to menu.");
+                        break;
+                case 1:  if (currentUserBalance < pendingTransfer.getAmount()) {
+                    System.out.println("Sorry. You don't have enough money to approve this request.");
+                    break;
+                }
+                        pendingTransfer.setTransferStatusId(2);
+                        tenmoService.acceptOrRejectRequest(pendingTransfer);
+                        break;
+                case 2: pendingTransfer.setTransferStatusId(3);
+                        tenmoService.acceptOrRejectRequest(pendingTransfer);
+                        break;
+                default:
+                        System.out.println("Invalid selection. Please try again");
+            }
+
 
 
     }
@@ -275,7 +274,6 @@ public class App {
             return;
         }
 
-
         boolean isValid = false;
         for(User user : users){
             if(user.getId() == toId){
@@ -299,6 +297,33 @@ public class App {
             consoleService.printString("Invalid Id");
         }
 
+    }
+    private String transferDisplayString(Transfer transfer) {
+        // Create empty display string
+        String display = "";
+
+        // Add id to string
+        display += transfer.getTransferId() + "\t";
+
+        String currentUserName = currentUser.getUser().getUsername();
+        String fromName = transfer.getAccountFromUsername();
+        String toName = transfer.getAccountToUsername();
+
+        if (currentUserName.equals(fromName)) {
+            display += "TO: " + toName + "\t";
+        } else {
+            display += "FROM: " + fromName + "\t";
+        }
+
+        double amount = transfer.getAmount();
+        display += NumberFormat.getCurrencyInstance().format(amount);
+
+        return display;
+    }
+    private void displayUsers(User[] users) {
+        for (User user : users) {
+            consoleService.printString(user.toString());
+        }
     }
 
 }

@@ -84,6 +84,33 @@ public class TenmoService {
     }
 
 
+    public Transfer[] viewPendingTransfers(long userId) {
+        Transfer[] pendingTransfers = null;
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "transfers/" + userId + "/pending",
+                    HttpMethod.GET,
+                    makeAuthEntity(),
+                    Transfer[].class);
+            pendingTransfers = response.getBody();
+        }
+        catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return pendingTransfers;
+    }
+
+    public boolean acceptOrRejectRequest(Transfer transfer) {
+        boolean success = false;
+        try {
+            restTemplate.put(baseUrl + "transfers/requests", makeTransferEntity(transfer));
+            success = true;
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return success;
+    }
+
+
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();

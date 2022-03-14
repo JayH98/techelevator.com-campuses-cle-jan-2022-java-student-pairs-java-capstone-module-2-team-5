@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
     private AccountDao accountDao;
@@ -68,6 +68,14 @@ public class TenmoController {
         // Alternate implementation could get all transfers by id and then use Java logic to filter list
         // filter : transferType.equals("Pending");
         return transferDao.viewPendingTransfers(id);
+    }
+
+    @RequestMapping(path = "transfers/requests", method = RequestMethod.PUT)
+    public void approveOrRejectTransfer(@RequestBody Transfer transfer) {
+        if (transfer.getTransferStatusId() == 2) {
+            transferDao.updateBalance(transfer);
+        }
+        transferDao.updateTransfer(transfer);
     }
 }
 
