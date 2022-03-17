@@ -60,7 +60,6 @@ public class TenmoController {
         return transferDao.viewTransfers(userId);
     }
     // TODO ask Ben about Principal?
-    // TODO make id optional?
     // TODO only print transfers based on Principal?
 
     @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)

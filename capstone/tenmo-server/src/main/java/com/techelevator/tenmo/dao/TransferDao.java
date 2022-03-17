@@ -21,8 +21,7 @@ public interface TransferDao {
 
 
 
-// TODO implement method to update pending requests to either rejected or accepted
-//    public Transfer updateTransfer(Transfer transfer);
+
 
 
 }

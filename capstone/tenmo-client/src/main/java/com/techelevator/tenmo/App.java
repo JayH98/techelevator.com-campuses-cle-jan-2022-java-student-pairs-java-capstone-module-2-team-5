@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TenmoService;
@@ -134,6 +131,7 @@ public class App {
                     if (transfer.getTransferId() == transferId) {
                         consoleService.printTransferHeader();
                         consoleService.printString(transfer.toString());
+                        consoleService.pause();
                         found = true;
                     }
                 }
@@ -150,6 +148,7 @@ public class App {
         // TODO Auto-generated method stub
         boolean isValid;
         Transfer pendingTransfer = null;
+        boolean requestDealtWith = false;
         double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());
         do {
             isValid = false;
@@ -158,53 +157,68 @@ public class App {
 
             if (pendingTransfers != null) {
                 for (Transfer transfer : pendingTransfers) {
-                    System.out.println(transfer.getTransferId() + "\t\t" + transfer.getAccountFromUsername() + "\t\t\t\t" + transfer.getAmount());
+                    System.out.println(transfer.getTransferId() + "\t\t" + transfer.getAccountToUsername() + "\t\t\t\t" + transfer.getAmount());
                 }
                 int transferToManage = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
-                if (transferToManage == 0) { return; }
+                if (transferToManage == 0) {
+                    return;
+                }
                 for (Transfer transfer : pendingTransfers) {
                     if (transferToManage == transfer.getTransferId()) {
                         pendingTransfer = transfer;
                         isValid = true;
                         break;
                     }
-                 } if (pendingTransfer == null) {consoleService.printString("\nInvalid transfer selection. Please try again.\n");}
+                }
+                if (pendingTransfer == null) {
+                    consoleService.printString("\nInvalid transfer selection. Please try again.\n");
+                }
             } else {
                 consoleService.printString("\nYou do not have any pending transfers.\n");
                 return;
             }
         } while (!isValid);
 
-
         consoleService.printApprovalHeader();
-            int approval = consoleService.promptForInt("Please choose an option: ");
-            switch (approval) {
-                case 0: System.out.println("Canceling approval. Returning to menu.");
-                        break;
-                case 1:  if (currentUserBalance < pendingTransfer.getAmount()) {
-                    System.out.println("Sorry. You don't have enough money to approve this request.");
+        int approval = consoleService.promptForInt("Please choose an option: ");
+        switch (approval) {
+            case 0:
+                System.out.println("Canceling approval. Returning to main menu.");
+                break;
+            case 1:
+                if (currentUserBalance < pendingTransfer.getAmount()) {
+                    System.out.println("Sorry. You don't have enough money to approve this request. Returning to main menu");
                     break;
                 }
-                        pendingTransfer.setTransferStatusId(2);
-                        tenmoService.acceptOrRejectRequest(pendingTransfer);
-                        break;
-                case 2: pendingTransfer.setTransferStatusId(3);
-                        tenmoService.acceptOrRejectRequest(pendingTransfer);
-                        break;
-                default:
-                        System.out.println("Invalid selection. Please try again");
-            }
+                pendingTransfer.setTransferStatusId(2);
+                requestDealtWith = tenmoService.acceptOrRejectRequest(pendingTransfer);
+                if (requestDealtWith) {
+                    consoleService.printString("Request successfully approved! Money will be taken from your account shortly.");
+                    break;
+                } else {
+                    consoleService.printString("Error. Something went wrong during the process. Please contact the creator of this app.");
+                    break;
+                }
+            case 2:
+                pendingTransfer.setTransferStatusId(3);
+                requestDealtWith = tenmoService.acceptOrRejectRequest(pendingTransfer);
+                if (requestDealtWith) {
+                    consoleService.printString("Request successfully rejected! I'm sure they didn't really need it.");
+                    break;
+                } else {
+                    consoleService.printString("Error. Something went wrong during the process. Please contact the creator of this app.");
+                    break;
+                }
+            default:
+                System.out.println("Invalid selection. Returning to main menu");
+                break;
+        }
 
 
 
     }
 
     private void sendBucks() {
-        // TODO have tenmoService call with transfer( fromUserId, toUserId, amount)
-        /*todo have transfer() return a boolean on success or failure and send
-        boolean to consoleService to print message
-         */
-
         boolean transferSuccessful = true;
         boolean onSendMoneyMenu = true;
         Transfer transfer = new Transfer();     // make a empty transferObject
@@ -215,13 +229,14 @@ public class App {
 
         while (onSendMoneyMenu) {
             int toId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");  //  request an int that is a UserId
+            if (toId == 0) {
+                consoleService.printString("\nExiting menu\n");
+                return;
+            }
             double moneyToTransfer = consoleService.promptForDouble("Enter amount: ");                  // query the user for the amount of $ to send
             double currentUserBalance = tenmoService.getUserBalance(currentUser.getUser().getId());         // getting the balance
 
-            if (moneyToTransfer == 0) {
-                return;
-            }
-            if (moneyToTransfer < 0.00) {                   // check the amount is greater than $0.00
+            if (moneyToTransfer <= 0.00) {                   // check the amount is greater than $0.00
                 consoleService.printString("This amount is not valid.");
                 continue;
             }
@@ -257,16 +272,6 @@ public class App {
             consoleService.printString("Money sent successfully! Returning to main menu");
     }
 
-
-//    if (isValid && currentUser.getUser().getId() != toId) {
-//        //set the toId in the transferObject
-//        transfer.setToUserId(toId);
-//        transferSuccessful = tenmoService.sendMoney(transfer);
-//    }else {
-//        consoleService.printString("Invalid Id selection");
-//    }
-
-
     private void requestBucks() {
         // TODO Auto-generated method stub
         Transfer transfer = new Transfer();
@@ -275,8 +280,7 @@ public class App {
         User[] users = tenmoService.listAllUsers();
         displayUsers(users);
 
-        int toId = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
-
+        int moneyFromId = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
         double moneyToRequest = consoleService.promptForDouble("Enter amount: ");
 
         if (moneyToRequest <= 0) {
@@ -286,15 +290,15 @@ public class App {
 
         boolean isValid = false;
         for(User user : users){
-            if(user.getId() == toId){
+            if(user.getId() == moneyFromId){
                 isValid = true;
                 break;
             }
         }
-        if(isValid && currentUser.getUser().getId() != toId){
-            //set the toId in the transferObject
-            transfer.setFromUserId(currentUser.getUser().getId());
-            transfer.setToUserId(toId);                             // In this instance, the toId is used as the person the request is being sent to
+        if(isValid && currentUser.getUser().getId() != moneyFromId){
+            //set the moneyFromId in the transferObject
+            transfer.setFromUserId(moneyFromId);
+            transfer.setToUserId(currentUser.getUser().getId());
             transfer.setTransferTypeId(1);
             transfer.setTransferStatusId(1);
             transfer.setAmount(moneyToRequest);
