@@ -4,15 +4,12 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.exceptions.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -62,11 +59,23 @@ public class TenmoController {
     // TODO ask Ben about Principal?
     // TODO only print transfers based on Principal?
 
-    @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)
+    @RequestMapping(path = "transfers/{id}/requests", method = RequestMethod.GET)
     public List<Transfer> viewPendingTransferRequests(@PathVariable int id) throws TransferNotFoundException {
         // Alternate implementation could get all transfers by id and then use Java logic to filter list
+        // Iterate over list of all transfers
         // filter : transferType.equals("Pending");
-        return transferDao.viewPendingTransfers(id);
+        return transferDao.viewPendingTransferRequests(id);
+    }
+
+    @RequestMapping(path = "transfers/requests/accepted", method = RequestMethod.PUT)
+    public void acceptRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+        transferDao.acceptRequest(transfer);
+
+    }
+
+    @RequestMapping(path = "transfers/request/rejected", method = RequestMethod.PUT)
+    public void rejectRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+        transferDao.rejectRequest(transfer);
     }
 
     @RequestMapping(path = "transfers/requests", method = RequestMethod.PUT)
