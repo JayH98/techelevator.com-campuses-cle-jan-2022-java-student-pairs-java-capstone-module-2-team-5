@@ -15,9 +15,7 @@ public class Transfer {
     private String accountFromUsername;
     private String accountToUsername;
     private double amount;
-    @JsonProperty("from_user_id")
     private long fromUserId;
-    @JsonProperty("to_user_id")
     private long toUserId;
 
     public long getFromUserId() {
@@ -32,7 +30,7 @@ public class Transfer {
         return toUserId;
     }
 
-    public void setToUserId(int toUserId) {
+    public void setToUserId(long toUserId) {
         this.toUserId = toUserId;
     }
 

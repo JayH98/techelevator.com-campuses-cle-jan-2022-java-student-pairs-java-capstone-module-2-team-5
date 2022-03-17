@@ -15,12 +15,14 @@ public interface TransferDao {
 
     public Transfer createTransfer(Transfer transfer);
 
-    public void acceptRequest(Transfer transfer);
+    public void updateTransfer(Transfer transfer);
+
+    public void updateBalance(Transfer transfer);
+
+
 
     public void rejectRequest(Transfer transfer);
 
-// TODO implement method to update pending requests to either rejected or accepted
-//    public Transfer updateTransfer(Transfer transfer);
 
 
 }

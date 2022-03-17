@@ -86,7 +86,7 @@ public class ConsoleService {
         System.out.println("Your current account balance is: " +
                 NumberFormat.getCurrencyInstance().format(balance));
     }
-    //todo send TE bucks display Method in ConsolService.java
+
     public void printUsersHeader() {
         System.out.println("-------------------------------------------\n" +
                 "Users\n" +
@@ -111,8 +111,8 @@ public class ConsoleService {
         System.out.println("1: Approve\n" +
                 "2: Reject\n" +
                 "0: Don't approve or reject\n" +
-                "------------------------------------------\n" +
-                "Please choose an option: ");
+                "------------------------------------------\n");
+
     }
 
     public void printPendingRequestsHeader() {
@@ -127,10 +127,6 @@ public class ConsoleService {
         System.out.println(string);
     }
 
-    //todo write the useTransfers display in ConsolService.java
-    //todo write the transferId display in ConsolService.java
-    //todo (optional) create the requesting TE bucks display in ConsolService.java
-    //todo (optional) pending request
 
     public void pause() {
         System.out.println("\nPress Enter to continue...");
@@ -140,7 +136,7 @@ public class ConsoleService {
 
 
     public void transferNotFoundMessage() {
-        System.out.println("\nTransaction not found!!\n");
+        System.out.println("\nTransaction not found!! Either this transaction does not exist, or you do not have permission to view it.\n");
     }
 
     public void printErrorMessage() {
