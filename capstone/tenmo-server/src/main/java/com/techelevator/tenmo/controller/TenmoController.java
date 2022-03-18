@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
     private AccountDao accountDao;
@@ -59,7 +59,7 @@ public class TenmoController {
     // TODO ask Ben about Principal?
     // TODO only print transfers based on Principal?
 
-    @RequestMapping(path = "transfers/{id}/requests", method = RequestMethod.GET)
+    @RequestMapping(path = "transfers/{id}/pending", method = RequestMethod.GET)
     public List<Transfer> viewPendingTransferRequests(@PathVariable int id) throws TransferNotFoundException {
         // Alternate implementation could get all transfers by id and then use Java logic to filter list
         // Iterate over list of all transfers
@@ -67,16 +67,16 @@ public class TenmoController {
         return transferDao.viewPendingTransferRequests(id);
     }
 
-    @RequestMapping(path = "transfers/requests/accepted", method = RequestMethod.PUT)
-    public void acceptRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
-        transferDao.acceptRequest(transfer);
+//    @RequestMapping(path = "transfers/requests/accepted", method = RequestMethod.PUT)
+//    public void acceptRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+//        transferDao.acceptRequest(transfer);
+//
+//    }
 
-    }
-
-    @RequestMapping(path = "transfers/request/rejected", method = RequestMethod.PUT)
-    public void rejectRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
-        transferDao.rejectRequest(transfer);
-    }
+//    @RequestMapping(path = "transfers/request/rejected", method = RequestMethod.PUT)
+//    public void rejectRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
+//        transferDao.rejectRequest(transfer);
+//    }
 
     @RequestMapping(path = "transfers/requests", method = RequestMethod.PUT)
     public void approveOrRejectTransfer(@RequestBody Transfer transfer) {
@@ -86,26 +86,4 @@ public class TenmoController {
         transferDao.updateTransfer(transfer);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
