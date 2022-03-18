@@ -27,8 +27,3 @@ public interface TransferDao {
 
 }
 
-
-
-
-
-

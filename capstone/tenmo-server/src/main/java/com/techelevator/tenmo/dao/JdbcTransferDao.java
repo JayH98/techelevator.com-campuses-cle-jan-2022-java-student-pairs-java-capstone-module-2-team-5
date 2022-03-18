@@ -27,7 +27,7 @@ public class JdbcTransferDao implements TransferDao {
 
         String sql = "UPDATE account SET balance = (balance - ?) " +
                 "WHERE user_id = ?;";
-        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getFromUserId());                               // TODO use created update balance instead
+        jdbcTemplate.update(sql, transfer.getAmount(), transfer.getFromUserId());                   // TODO use created update balance instead
 
         sql = "UPDATE account SET balance = (balance + ?) " +
                 "WHERE user_id = ?;";
@@ -126,7 +126,7 @@ public class JdbcTransferDao implements TransferDao {
         jdbcTemplate.update(sql, transfer.getTransferStatusId(), transfer.getTransferId());
     }
 
-    public void updateBalance(Transfer transfer) {                                                          // TODO possibly move update balance into accountDao
+    public void updateBalance(Transfer transfer) {                          // TODO possibly move update balance into accountDao
         String sql = "Update account " +
                 "SET balance = balance - ? " +
                 "WHERE account_id = ?;";
@@ -174,13 +174,13 @@ public class JdbcTransferDao implements TransferDao {
         return transfer;
     }
 
-    private SqlRowSet getUserRowset(int userId) {                 //Gets usernames for Transfer object using account_id
+    private SqlRowSet getUserRowset(int userId) {      //Gets usernames for Transfer object using account_id
         String sql = "SELECT username FROM tenmo_user " +
                 "JOIN account ON tenmo_user.user_id = account.user_id " +
                 "WHERE account_id = ?;";
 
         SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, userId);
-        rowset.next();                                            // Used to prevent java.sql.SQLException "Invalid cursor position"
+        rowset.next();                      // Used to prevent java.sql.SQLException "Invalid cursor position"
 
         return rowset;
     }
@@ -229,3 +229,4 @@ public class JdbcTransferDao implements TransferDao {
     }
 
 }
+

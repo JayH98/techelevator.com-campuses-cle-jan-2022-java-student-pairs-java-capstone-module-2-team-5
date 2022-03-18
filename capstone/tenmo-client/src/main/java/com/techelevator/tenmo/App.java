@@ -241,7 +241,7 @@ public class App {
                 continue;
             }
             if (moneyToTransfer > currentUserBalance) {
-                consoleService.printString("Sorry. You do not have enough money to send $" + moneyToTransfer);      // check the amount cannot be more than the balance
+                consoleService.printString("Sorry. You do not have enough money to send $" + moneyToTransfer);    // check the amount cannot be more than the balance
                 continue;
             }
             transfer.setAmount(moneyToTransfer);
