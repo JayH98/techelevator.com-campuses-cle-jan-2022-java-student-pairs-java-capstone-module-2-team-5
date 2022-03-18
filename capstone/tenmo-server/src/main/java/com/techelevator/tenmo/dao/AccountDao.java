@@ -6,3 +6,4 @@ public interface AccountDao {
     // should this parameter be account_id if a user has multiple accounts?
     public Double getBalance(int id);
 }
+
