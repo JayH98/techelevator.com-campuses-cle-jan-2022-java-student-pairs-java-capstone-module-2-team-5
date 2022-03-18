@@ -30,7 +30,7 @@ public class Transfer {
         return toUserId;
     }
 
-    public void setToUserId(int toUserId) {
+    public void setToUserId(long toUserId) {
         this.toUserId = toUserId;
     }
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class TenmoController {
     private UserDao userDao;
     private AccountDao accountDao;
@@ -57,7 +57,6 @@ public class TenmoController {
         return transferDao.viewTransfers(userId);
     }
     // TODO ask Ben about Principal?
-    // TODO make id optional?
     // TODO only print transfers based on Principal?
 
     @RequestMapping(path = "transfers/{id}/requests", method = RequestMethod.GET)
@@ -77,6 +76,14 @@ public class TenmoController {
     @RequestMapping(path = "transfers/request/rejected", method = RequestMethod.PUT)
     public void rejectRequest(@RequestBody Transfer transfer) throws TransferNotFoundException {
         transferDao.rejectRequest(transfer);
+    }
+
+    @RequestMapping(path = "transfers/requests", method = RequestMethod.PUT)
+    public void approveOrRejectTransfer(@RequestBody Transfer transfer) {
+        if (transfer.getTransferStatusId() == 2) {
+            transferDao.updateBalance(transfer);
+        }
+        transferDao.updateTransfer(transfer);
     }
 }
 
